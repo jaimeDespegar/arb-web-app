@@ -5,8 +5,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// core components
-import Navbar from "components/Navbars/Navbar.js";
+// core components0
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
@@ -106,12 +105,6 @@ export default function RTL({ ...rest }) {
         {...rest}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
-          routes={routes}
-          handleDrawerToggle={handleDrawerToggle}
-          rtlActive
-          {...rest}
-        />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
           <div className={classes.content}>
