@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
@@ -27,7 +26,6 @@ import CardHeader from "components/Card/CardHeader";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
-
 import { bugs, website, server } from "variables/general.js";
 
 import {

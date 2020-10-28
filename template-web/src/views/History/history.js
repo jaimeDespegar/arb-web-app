@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect , useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -7,8 +7,11 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardBody from "components/Card/CardBody.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns'
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 
 
 const styles = {
@@ -44,38 +47,105 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function History() {
+
   const classes = useStyles();
+  const [data, setData] = useState([]);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+
+  const findItems = () => {
+    const fromDateFormated = format(fromDate, 'yyyy-MM-dd HH:mm:ss');
+    const toDateFormated = format(toDate, 'yyyy-MM-dd HH:mm:ss');
+    if (fromDate && toDate) 
+    {
+      fetch("http://127.0.0.1:8000/api/estadia/find/"+fromDateFormated+"/"+toDateFormated)
+      .then(res => res.json())
+      .then((result) => {
+          let values = result.map((item) => [item.userName, 
+                                             'ungs', 
+                                             item.placeUsed.toString(), 
+                                             format(new Date(item.dateCreated), 'dd/MM/yyyy HH:mm:ss'), 
+                                             <Button color="primary"> Ver </Button>])
+          setData(values);
+        },
+        (error) => { console.log(error) }
+      )
+    } else {
+      console.log("No hay fechas para filtrar");
+    }
+  }
+
+  useEffect(() => { findItems() }, [])
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>Busqueda Historial de Estadias</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
+                  {/* <CustomInput
                     labelText="Desde"
                     id="first-name"
+                    value={fromDate}
+                    onChange={(e) => setFromDate(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
-                  />
+                  /> */}
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                      <KeyboardDatePicker
+                        disableToolbar
+                        variant="inline"
+                        format="dd/MM/yyyy HH:mm:ss"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Fecha Desde"
+                        value={fromDate}
+                        onChange={setFromDate}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </Grid>
+                  </MuiPickersUtilsProvider>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
+                  {/* <CustomInput
                     labelText="Hasta"
                     id="last-name"
+                    value={toDate}
+                    onChange={(e) => setToDate(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
-                  />
+                  /> */}
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                      <KeyboardDatePicker
+                        disableToolbar
+                        variant="inline"
+                        format="dd/MM/yyyy HH:mm:ss"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Fecha Hasta"
+                        value={toDate}
+                        onChange={setToDate}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </Grid>
+                  </MuiPickersUtilsProvider>
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Buscar</Button>
+              <Button color="info" onClick={() => findItems()}>Buscar</Button>
             </CardFooter>
           </Card>
       </GridItem>
@@ -87,13 +157,9 @@ export default function History() {
           </CardHeader>
           <CardBody>
             <Table
-              tableHeaderColor="primary"
+              tableHeaderColor="info"
               tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Fotos"]}
-              tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
-              ]}
+              tableData={data}
             />
           </CardBody>
         </Card>
