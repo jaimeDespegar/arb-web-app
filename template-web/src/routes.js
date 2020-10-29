@@ -5,6 +5,7 @@ import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
+import BicycleParkings from "views/BicycleParkings/BicycleParkings.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import History from "views/History/history.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
@@ -16,6 +17,13 @@ const dashboardRoutes = [
     name: "Dashboard",
     icon: Dashboard,
     component: DashboardPage,
+    layout: "/admin"
+  },
+  {
+    path: "/bicycleParkings",
+    name: "Bicicleteros",
+    icon: Dashboard,
+    component: BicycleParkings,
     layout: "/admin"
   },
   {
@@ -32,13 +40,13 @@ const dashboardRoutes = [
     component: NotificationsPage,
     layout: "/admin"
   },
-  {
-    path: "/user",
-    name: "User Profile",
-    icon: Person,
-    component: UserProfile,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/user",
+  //   name: "User Profile",
+  //   icon: Person,
+  //   component: UserProfile,
+  //   layout: "/admin"
+  // },
 ];
 
 export default dashboardRoutes;
