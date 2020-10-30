@@ -53,7 +53,7 @@ export default function Dashboard() {
   };
 
   const findStaysFromToday = () => {
-    fetch("http://127.0.0.1:8000/api/estadias/")
+    fetch("http://127.0.0.1:8000/api/estadias-getAll/")
     .then(res => res.json())
     .then((result) => {
         console.log(result);
