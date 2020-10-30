@@ -2,12 +2,15 @@ import React, { useEffect , useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import CustomInput from "components/CustomInput/CustomInput";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
@@ -15,18 +18,6 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 
 
 const styles = {
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
-    },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF"
-    }
-  },
   cardTitleWhite: {
     color: "#FFFFFF",
     marginTop: "0px",
@@ -52,13 +43,28 @@ export default function History() {
   const [data, setData] = useState([]);
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+  const [userEmail, setUserEmail] = useState('');
+  const [anonymous, setAnonymous] = useState(false);
+
 
   const findItems = () => {
-    const fromDateFormated = format(fromDate, 'yyyy-MM-dd HH:mm:ss');
-    const toDateFormated = format(toDate, 'yyyy-MM-dd HH:mm:ss');
-    if (fromDate && toDate) 
-    {
-      fetch("http://127.0.0.1:8000/api/estadia/find/"+fromDateFormated+"/"+toDateFormated)
+    let filters = "?";
+
+    if (fromDate) {
+      filters+="fromDate="+format(fromDate, 'yyyy-MM-dd HH:mm:ss');
+    }
+    if (toDate) {
+      filters+="&toDate="+format(toDate, 'yyyy-MM-dd HH:mm:ss');
+    }
+    if (anonymous) {
+      filters+="&isAnonymous="+(anonymous?"True":"False");
+    }
+    if (userEmail) {
+      filters+="&userEmail="+userEmail;
+    }
+
+    if (filters !== '?') {
+      fetch("http://127.0.0.1:8000/api/estadia/find" + filters)
       .then(res => res.json())
       .then((result) => {
           let values = result.map((item) => [item.userName, 
@@ -75,6 +81,10 @@ export default function History() {
     }
   }
 
+  const handleChange = (event) => {
+    setAnonymous(event.target.checked);
+  };
+
   useEffect(() => { findItems() }, [])
 
   return (
@@ -87,15 +97,6 @@ export default function History() {
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  {/* <CustomInput
-                    labelText="Desde"
-                    id="first-name"
-                    value={fromDate}
-                    onChange={(e) => setFromDate(e.target.value)}
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  /> */}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
@@ -115,15 +116,6 @@ export default function History() {
                   </MuiPickersUtilsProvider>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                  {/* <CustomInput
-                    labelText="Hasta"
-                    id="last-name"
-                    value={toDate}
-                    onChange={(e) => setToDate(e.target.value)}
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  /> */}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
@@ -143,6 +135,37 @@ export default function History() {
                   </MuiPickersUtilsProvider>
                 </GridItem>
               </GridContainer>
+              
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={4} >
+                    <Grid container justify="space-around" >
+                      <CustomInput
+                        labelText="User Email"
+                        id="user-email"
+                        value={userEmail}
+                        onChange={e => setUserEmail(e.target.value)}
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                      />
+                    </Grid>
+                </GridItem>
+
+                <GridItem xs={12} sm={12} md={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={anonymous}
+                        onChange={handleChange}
+                        name="checkedB"
+                        color="primary"
+                      />
+                    }
+                    label="Incluir Anonimas"
+                  />
+                </GridItem>
+              </GridContainer>
+
             </CardBody>
             <CardFooter>
               <Button color="info" onClick={() => findItems()}>Buscar</Button>
