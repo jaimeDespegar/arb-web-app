@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import FormLabel from "@material-ui/core/FormLabel";
 import Paper from "@material-ui/core/Paper";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
+import PlaceIcon from '@material-ui/icons/Place';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +67,7 @@ export default function BicycleParkings() {
                 {parking.places.length ? (parking.places.map((place) => (
                   <Grid key={place.placeNumber} item>
                     <Paper elevation={8} className={classes.paper} 
-                           children={place.occupied ? <div><DirectionsBike fontSize='large'/></div> : ''}
+                           children={place.occupied ? <div><DirectionsBike fontSize='large'/></div> : <div><PlaceIcon fontSize='large'/></div>}
                            style={{'backgroundColor': place.occupied ? '#ef5350':'#66bb6a'}}/>
                   </Grid> 
                 ))): (<></>)}
