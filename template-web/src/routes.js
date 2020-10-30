@@ -1,12 +1,11 @@
 
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
+import DirectionsBike from '@material-ui/icons/DirectionsBike';
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import BicycleParkings from "views/BicycleParkings/BicycleParkings.js";
-import UserProfile from "views/UserProfile/UserProfile.js";
 import History from "views/History/history.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
@@ -14,8 +13,8 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 const dashboardRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
-    icon: Dashboard,
+    name: "Estadias",
+    icon: DirectionsBike,
     component: DashboardPage,
     layout: "/admin"
   },

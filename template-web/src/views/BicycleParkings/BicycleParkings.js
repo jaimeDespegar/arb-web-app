@@ -1,11 +1,8 @@
-import React, { useEffect , useState} from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer";
 import Grid from "@material-ui/core/Grid";
 import FormLabel from "@material-ui/core/FormLabel";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
 import Paper from "@material-ui/core/Paper";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 
@@ -30,13 +27,8 @@ const useStyles = makeStyles((theme) => ({
 export default function BicycleParkings() {
   
   const classes = useStyles();
-  const [spacing, setSpacing] = React.useState(1);
+  const [spacing] = React.useState(1);
   const [parkings, setParkings] = React.useState([]);
-
-  const handleChange = (event) => {
-    setSpacing(Number(event.target.value));
-  };
-  //
 
   const findBicycleParkings = () => {
       fetch("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/")
