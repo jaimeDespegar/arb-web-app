@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
-
+import axios from 'axios';
 
 const styles = {
   cardTitleWhite: {
@@ -64,8 +64,9 @@ export default function History() {
     }
 
     if (filters !== '?') {
-      fetch("http://127.0.0.1:8000/api/estadia/find" + filters)
-      .then(res => res.json())
+      axios
+      .get("http://127.0.0.1:8000/api/estadia/find" + filters)
+      .then(res => res.data)
       .then((result) => {
           let values = result.map((item) => [item.userName, 
                                              'ungs', 
@@ -76,6 +77,7 @@ export default function History() {
         },
         (error) => { console.log(error) }
       )
+      .catch((error) => { console.log(error) })  
     } else {
       console.log("No hay fechas para filtrar");
     }

@@ -15,6 +15,7 @@ import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import { completedTasksChart } from "variables/charts.js";
 import { format } from 'date-fns'
+import axios from 'axios';
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
@@ -53,8 +54,9 @@ export default function Dashboard() {
   };
 
   const findStaysFromToday = () => {
-    fetch("http://127.0.0.1:8000/api/estadias-getAll/")
-    .then(res => res.json())
+    axios
+    .get("http://127.0.0.1:8000/api/estadias-getAll/")
+    .then(res => res.data)
     .then((result) => {
         console.log(result);
         //setStays(result);
@@ -73,7 +75,8 @@ export default function Dashboard() {
         arrivals.forEach((item, key) => { arrivalsIndex.push(key); });
         departures.forEach((item, key) => { departuresIndex.push(key); });
       },
-      (error) => { console.log(error) })    
+      (error) => { console.log(error) })
+      .catch((error) => { console.log(error) })    
   }
 
   const formatDateCreated = (segment) => {

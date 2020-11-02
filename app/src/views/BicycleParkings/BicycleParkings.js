@@ -6,6 +6,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Paper from "@material-ui/core/Paper";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import PlaceIcon from '@material-ui/icons/Place';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,14 +33,32 @@ export default function BicycleParkings() {
   const [parkings, setParkings] = React.useState([]);
 
   const findBicycleParkings = () => {
-      fetch("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/")
-      .then(res => res.json())
-      .then((result) => {
-          console.log(result);
-          setParkings(result);
-        },
-        (error) => { console.log(error) }
-      )
+    const token = axios.defaults.headers.common.Authorization
+    console.log('header ', token)
+
+    if (token) {
+      const data = {
+        headers: {
+          "Authorization": axios.defaults.headers.common.Authorization
+        }
+      }
+      // 9a161d73f4895ecc8f86b4922f989852ea238e02
+  
+      axios
+        .get("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/", data)
+        .then(res => res.data)
+        .then((result) => {
+            console.log(result);
+            setParkings(result);
+          }
+        )
+        .catch((error) => { console.log('Error bicycly parkings ', error) })  
+    } else {
+      console.log('No hay token')
+    }
+    
+    
+    
   }
   
   useEffect(() => { findBicycleParkings() }, [])

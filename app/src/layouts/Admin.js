@@ -16,6 +16,7 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
+import axios from "axios";
 
 let ps;
 
@@ -74,7 +75,27 @@ export default function Admin({ ...rest }) {
     }
   };
   // initialize and destroy the PerfectScrollbar plugin
+  const login = () => {
+    //const data = { 'username': 'user-web', 'password': 'user1234' } 
+    const data = { 'username': 'user-web', 'password': 'user1234' }
+
+    if (axios.defaults.headers.common.Authorization) {
+      axios.defaults.headers.common.Authorization = null;
+    }
+
+    axios
+      .post("http://127.0.0.1:8000/api/auth/login/", data)
+      .then(res => res.data)
+      .then((result) => {
+        const { token } = result;
+        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        console.log('User logged')
+       })
+      .catch((error) => { console.log(error) })
+  }
+
   React.useEffect(() => {
+    login();
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
