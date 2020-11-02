@@ -43,7 +43,7 @@ export default function History() {
   const [data, setData] = useState([]);
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [anonymous, setAnonymous] = useState(false);
 
 
@@ -59,8 +59,8 @@ export default function History() {
     if (anonymous) {
       filters+="&isAnonymous="+(anonymous?"True":"False");
     }
-    if (userEmail) {
-      filters+="&userEmail="+userEmail;
+    if (userName) {
+      filters+="&userName="+userName;
     }
 
     if (filters !== '?') {
@@ -142,10 +142,10 @@ export default function History() {
                 <GridItem xs={12} sm={12} md={4} >
                     <Grid container justify="space-around" >
                       <CustomInput
-                        labelText="User Email"
-                        id="user-email"
-                        value={userEmail}
-                        onChange={e => setUserEmail(e.target.value)}
+                        labelText="Nombre de usuario"
+                        id="user-name"
+                        value={userName}
+                        onChange={e => setUserName(e.target.value)}
                         formControlProps={{
                           fullWidth: true
                         }}

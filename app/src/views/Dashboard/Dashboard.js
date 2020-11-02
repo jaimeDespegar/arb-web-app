@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccessTime from "@material-ui/icons/AccessTime";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import MotorcycleOutlined from '@material-ui/icons/MotorcycleOutlined';
+import ErrorIcon from '@material-ui/icons/Error';
 import GridItem from "components/Grid/GridItem";
 import GridContainer from "components/Grid/GridContainer";
 import Table from "components/Table/Table";
@@ -28,15 +29,20 @@ export default function Dashboard() {
   //const [stays, setStays] = useState([]);
   const [arrivals] = useState([]);
   const [departures] = useState([]);
+  const [suspectedCases] = useState([]);
   const [arrivalsItems] = useState([]);
   const [departuresItems] = useState([]);
+  const [suspectedCasesItems] = useState([]);
   const [arrivalsIndex] = useState([]);
   const [departuresIndex] = useState([]);
+  const [suspectedCasesIndex] = useState([]);
   const [arrivalSelected, setArrivalSelected] = useState({});
   const [departureSelected, setDepartureSelected] = useState({});
+  const [suspectedCaseSelected, setSuspectCaseSelected] = useState({});
 
   const [checkedArrival, setCheckedArrival] = React.useState([0]);
   const [checkedDeparture, setCheckedDeparture] = React.useState([0]);
+  const [checkedSuspectedCase, setCheckedSuspectedCase] = React.useState([0]);
 
   const [newChecked, setNewChecked] = React.useState([]);
 
@@ -58,8 +64,8 @@ export default function Dashboard() {
     .get("http://127.0.0.1:8000/api/estadias-getAll/")
     .then(res => res.data)
     .then((result) => {
-        console.log(result);
-        //setStays(result);
+        // console.log(result);
+        // setStays(result);
         result.forEach((e) => {
           if (e.arrival.dateCreated) {
             arrivals.push(e.userName + ' estaciono en el lugar ' + e.placeUsed)
@@ -79,17 +85,32 @@ export default function Dashboard() {
       .catch((error) => { console.log(error) })    
   }
 
+  const findSuspectedCases = () => {
+    axios
+    .get("http://127.0.0.1:8000/api/notificationEgress-getAll/")
+    .then(res => res.data)
+    .then((result) => {
+      console.log(result)
+      result.forEach((e) => {
+        suspectedCases.push(e.userName + ' esta siendo robado ' + e.place)
+        suspectedCasesItems.push(e)
+      })
+      suspectedCases.forEach((item, key) => { suspectedCasesIndex.push(key); });
+    })
+    .catch((error) => { console.log(error) })
+  }
+
+
   const formatDateCreated = (segment) => {
     return segment.dateCreated ? 'Generada: ' + format(new Date(segment.dateCreated), 'dd-MM-yyyy HH:mm:ss'):''
   }
 
   useEffect(() => { 
-    findStaysFromToday() 
-    console.log("arrivals ", arrivalsItems)
-    console.log("departures ", departuresItems)
-    setArrivalSelected(arrivalsItems[0] || {})
-    setDepartureSelected(departuresItems[0] || {})
-  }, []);
+    findStaysFromToday();
+    findSuspectedCases();
+    // setArrivalSelected(arrivalsItems[0] || {})
+    // setDepartureSelected(departuresItems[0] || {})
+  }, [suspectedCases]);
 
   return (
     <div>
@@ -137,21 +158,18 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
+              <img
+                style={{ height: "180px", width: "100%", display: "block" }}
+                src={suspectedCaseSelected.photo}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Posible Robo</h4>
+              <p className={classes.cardCategory}>Bicicletero 2 - lugar 1</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> {formatDateCreated(new Date())}
               </div>
             </CardFooter>
           </Card>
@@ -201,7 +219,29 @@ export default function Dashboard() {
         </GridItem>
 
         <GridItem xs={12} sm={12} md={6}>
-          <Card>
+        <CustomTabs
+            title="Estadias:"
+            headerColor="danger"
+            tabs={[
+              {
+                tabName: "Posibles Robos",
+                tabIcon: ErrorIcon ,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[0]}
+                    tasksIndexes={suspectedCasesIndex}
+                    tasks={suspectedCases}
+                    onChangeRadio={handleToggle}
+                    checked={checkedSuspectedCase}
+                    setChecked={setCheckedSuspectedCase}
+                    setItemSelected={setSuspectCaseSelected}
+                    items={suspectedCasesItems}
+                  />
+                )
+              }
+            ]}
+          />
+          {/* <Card>
             <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>Casos Sospechosos</h4>
               <p className={classes.cardCategoryWhite}>
@@ -211,13 +251,13 @@ export default function Dashboard() {
             <CardBody>
               <Table
                 tableHeaderColor="danger"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHead={["Usuario", "Lugar", "Country"]}
                 tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"]
+                  ["Dakota Rice", "$36,738", "Niger"]
                 ]}
               />
             </CardBody>
-          </Card>
+          </Card> */}
         </GridItem>
       </GridContainer>
     </div>
