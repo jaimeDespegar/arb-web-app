@@ -74,7 +74,8 @@ export default function History() {
                                              'ungs', 
                                              item.placeUsed.toString(), 
                                              format(new Date(item.dateCreated), 'dd/MM/yyyy HH:mm:ss'), 
-                                             <Button color="primary"> Ver </Button>])
+                                             <Button color="primary"> Ver </Button>
+                                            ])
           setData(values);
         }
       )
@@ -142,8 +143,7 @@ export default function History() {
               <GridContainer style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          alignSelf: 'flex-end'
+          alignItems: "center"
         }}>
                 <GridItem xs={12} sm={12} md={4} >
                     <Grid container justify="space-around" >
