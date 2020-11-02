@@ -48,6 +48,8 @@ export default function History() {
 
 
   const findItems = () => {
+    const token = axios.defaults.headers.common.Authorization
+    console.log('history token ', token)
     let filters = "?";
 
     if (fromDate) {
@@ -74,12 +76,11 @@ export default function History() {
                                              format(new Date(item.dateCreated), 'dd/MM/yyyy HH:mm:ss'), 
                                              <Button color="primary"> Ver </Button>])
           setData(values);
-        },
-        (error) => { console.log(error) }
+        }
       )
       .catch((error) => { console.log(error) })  
     } else {
-      console.log("No hay fechas para filtrar");
+      console.log("No hay filtros seleccionados");
     }
   }
 
@@ -138,7 +139,12 @@ export default function History() {
                 </GridItem>
               </GridContainer>
               
-              <GridContainer>
+              <GridContainer style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          alignSelf: 'flex-end'
+        }}>
                 <GridItem xs={12} sm={12} md={4} >
                     <Grid container justify="space-around" >
                       <CustomInput

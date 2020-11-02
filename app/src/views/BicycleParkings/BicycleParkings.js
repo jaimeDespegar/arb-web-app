@@ -41,11 +41,11 @@ export default function BicycleParkings() {
         headers: {
           "Authorization": axios.defaults.headers.common.Authorization
         }
-      }
+      } 
       // 9a161d73f4895ecc8f86b4922f989852ea238e02
   
       axios
-        .get("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/", data)
+        .get("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/")
         .then(res => res.data)
         .then((result) => {
             console.log(result);
@@ -54,7 +54,7 @@ export default function BicycleParkings() {
         )
         .catch((error) => { console.log('Error bicycly parkings ', error) })  
     } else {
-      console.log('No hay token')
+      console.log('BicycleParking: no hay token')
     }
     
     

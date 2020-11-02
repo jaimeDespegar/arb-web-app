@@ -15,7 +15,7 @@ const useStyles = makeStyles(styles);
 export default function Tasks(props) {
   const classes = useStyles();
   
-  const { tasksIndexes, tasks, onChangeRadio, checked, setChecked, setItemSelected, items } = props;
+  const { tasksIndexes, tasks, onChangeRadio, checked, setChecked, setItemSelected, items, newChecked, setNewChecked } = props;
   const tableCellClasses = classnames(classes.tableCell, {});
 
   return (
@@ -27,7 +27,7 @@ export default function Tasks(props) {
               <Radio
                 checked={checked.indexOf(value) !== -1}
                 tabIndex={value}
-                onChange={() => onChangeRadio(value, checked, setChecked,  tasks, setItemSelected, items)}
+                onChange={() => onChangeRadio(value, checked, setChecked,  tasks, setItemSelected, items,  newChecked, setNewChecked)}
                 icon={<FiberManualRecord className={classes.radioUnchecked} />}
                 checkedIcon={<FiberManualRecord className={classes.radioChecked} />}
                 classes={{

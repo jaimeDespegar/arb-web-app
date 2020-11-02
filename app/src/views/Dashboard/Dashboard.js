@@ -40,13 +40,15 @@ export default function Dashboard() {
   const [departureSelected, setDepartureSelected] = useState({});
   const [suspectedCaseSelected, setSuspectCaseSelected] = useState({});
 
-  const [checkedArrival, setCheckedArrival] = React.useState([0]);
-  const [checkedDeparture, setCheckedDeparture] = React.useState([0]);
-  const [checkedSuspectedCase, setCheckedSuspectedCase] = React.useState([0]);
+  const [checkedArrival, setCheckedArrival] = React.useState([]);
+  const [checkedDeparture, setCheckedDeparture] = React.useState([]);
+  const [checkedSuspectedCase, setCheckedSuspectedCase] = React.useState([]);
 
-  const [newChecked, setNewChecked] = React.useState([]);
+  const [newCheckedA, setNewCheckedA] = React.useState([]);
+  const [newCheckedD, setNewCheckedD] = React.useState([]);
+  const [newCheckedS, setNewCheckedS] = React.useState([]);
 
-  const handleToggle = (value, checkedList, setChecked, tasks, setItemSelected, items) => {
+  const handleToggle = (value, checkedList, setChecked, tasks, setItemSelected, items, newChecked, setNewChecked) => {
     const currentIndex = checkedList.indexOf(value);
     setNewChecked([]);
     
@@ -60,29 +62,32 @@ export default function Dashboard() {
   };
 
   const findStaysFromToday = () => {
-    axios
-    .get("http://127.0.0.1:8000/api/estadias-getAll/")
-    .then(res => res.data)
-    .then((result) => {
-        // console.log(result);
-        // setStays(result);
-        result.forEach((e) => {
-          if (e.arrival.dateCreated) {
-            arrivals.push(e.userName + ' estaciono en el lugar ' + e.placeUsed)
-            arrivalsItems.push(e.arrival)
-          }
-          if (e.departure.dateCreated) {
-            departures.push(e.userName + ' se retiro del lugar ' + e.placeUsed)
-            departuresItems.push(e.departure)
-            departures.push(e.userName + ' se retiro del lugar ' + e.placeUsed)
-            departuresItems.push(e.departure)
-          }
-        })
-        arrivals.forEach((item, key) => { arrivalsIndex.push(key); });
-        departures.forEach((item, key) => { departuresIndex.push(key); });
-      },
-      (error) => { console.log(error) })
-      .catch((error) => { console.log(error) })    
+    const token = axios.defaults.headers.common.Authorization
+
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/api/estadias-getAll/")
+        .then(res => res.data)
+        .then((result) => {
+            result.forEach((e) => {
+              if (e.arrival.dateCreated) {
+                arrivals.push(e.userName + ' estaciono en el lugar ' + e.placeUsed)
+                arrivalsItems.push(e.arrival)
+              }
+              if (e.departure.dateCreated) {
+                departures.push(e.userName + ' se retiro del lugar ' + e.placeUsed)
+                departuresItems.push(e.departure)
+              }
+            })
+            arrivals.forEach((item, key) => { arrivalsIndex.push(key); });
+            departures.forEach((item, key) => { departuresIndex.push(key); });
+          },
+          (error) => { console.log(error) })
+          .catch((error) => { console.log(error) })  
+    } else {
+      console.log('Dashboard: no hay token')
+    }
+      
   }
 
   const findSuspectedCases = () => {
@@ -92,14 +97,13 @@ export default function Dashboard() {
     .then((result) => {
       console.log(result)
       result.forEach((e) => {
-        suspectedCases.push(e.userName + ' esta siendo robado ' + e.place)
+        suspectedCases.push('En el lugar ' + e.place +', dueño '+e.userName)
         suspectedCasesItems.push(e)
       })
       suspectedCases.forEach((item, key) => { suspectedCasesIndex.push(key); });
     })
     .catch((error) => { console.log(error) })
   }
-
 
   const formatDateCreated = (segment) => {
     return segment.dateCreated ? 'Generada: ' + format(new Date(segment.dateCreated), 'dd-MM-yyyy HH:mm:ss'):''
@@ -108,9 +112,7 @@ export default function Dashboard() {
   useEffect(() => { 
     findStaysFromToday();
     findSuspectedCases();
-    // setArrivalSelected(arrivalsItems[0] || {})
-    // setDepartureSelected(departuresItems[0] || {})
-  }, [suspectedCases]);
+  }, [1]);
 
   return (
     <div>
@@ -165,11 +167,11 @@ export default function Dashboard() {
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Posible Robo</h4>
-              <p className={classes.cardCategory}>Bicicletero 2 - lugar 1</p>
+              <p className={classes.cardCategory}>{suspectedCases[checkedSuspectedCase[0]]}</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> {formatDateCreated(new Date())}
+                <AccessTime /> {formatDateCreated(suspectedCaseSelected)}
               </div>
             </CardFooter>
           </Card>
@@ -195,6 +197,8 @@ export default function Dashboard() {
                     setChecked={setCheckedArrival}
                     setItemSelected={setArrivalSelected}
                     items={arrivalsItems}
+                    newChecked={newCheckedA}
+                    setNewChecked={setNewCheckedA}
                   />
                 )
               },
@@ -211,6 +215,8 @@ export default function Dashboard() {
                     setChecked={setCheckedDeparture}
                     setItemSelected={setDepartureSelected}
                     items={departuresItems}
+                    newChecked={newCheckedD}
+                    setNewChecked={setNewCheckedD}
                   />
                 )
               }
@@ -236,28 +242,13 @@ export default function Dashboard() {
                     setChecked={setCheckedSuspectedCase}
                     setItemSelected={setSuspectCaseSelected}
                     items={suspectedCasesItems}
+                    newChecked={newCheckedS}
+                    setNewChecked={setNewCheckedS}
                   />
                 )
               }
             ]}
-          />
-          {/* <Card>
-            <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>Casos Sospechosos</h4>
-              <p className={classes.cardCategoryWhite}>
-                Posibles casos de robo
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="danger"
-                tableHead={["Usuario", "Lugar", "Country"]}
-                tableData={[
-                  ["Dakota Rice", "$36,738", "Niger"]
-                ]}
-              />
-            </CardBody>
-          </Card> */}
+        />
         </GridItem>
       </GridContainer>
     </div>

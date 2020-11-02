@@ -91,7 +91,7 @@ export default function Admin({ ...rest }) {
         axios.defaults.headers.common.Authorization = `Token ${token}`;
         console.log('User logged')
        })
-      .catch((error) => { console.log(error) })
+      .catch((error) => { console.log('Not Loggin: ', error) })
   }
 
   React.useEffect(() => {
