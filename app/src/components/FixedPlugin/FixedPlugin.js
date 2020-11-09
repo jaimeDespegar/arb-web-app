@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 // nodejs library that concatenates classes
 import classnames from "classnames";
 
-import imagine1 from "assets/img/sidebar-1.jpg";
-import imagine2 from "assets/img/sidebar-2.jpg";
-import imagine3 from "assets/img/sidebar-3.jpg";
-import imagine4 from "assets/img/sidebar-4.jpg";
+import imagine1 from "assets/images/sidebar-1.jpg";
+import imagine2 from "assets/images/sidebar-2.jpg";
+import imagine3 from "assets/images/sidebar-3.jpg";
+import imagine4 from "assets/images/sidebar-4.jpg";
 
 import Button from "components/CustomButtons/Button";
 

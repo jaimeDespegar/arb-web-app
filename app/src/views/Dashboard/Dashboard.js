@@ -17,8 +17,8 @@ import CardFooter from "components/Card/CardFooter";
 import { completedTasksChart } from "variables/charts.js";
 import { format } from 'date-fns'
 import axios from 'axios';
-
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+import imgRobo from 'assets/images/Egress_4_08-11-2020_21:09:43.jpg'
 
 const useStyles = makeStyles(styles);
 
@@ -120,10 +120,9 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="success">
-            <img
-              style={{ height: "180px", width: "100%", display: "block" }}
-              src={arrivalSelected.photo}
-            />
+            <img style={{ height: "180px", width: "100%", display: "block" }}
+                 src={require('assets/images/Entrance_2_08-11-2020_21:09:08.jpg')}
+                 alt="..." />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Llegada</h4>
@@ -141,10 +140,11 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="warning">
-            <img
+            {departureSelected.photo && (<img
               style={{ height: "180px", width: "100%", display: "block" }}
-              src={departureSelected.photo}
-            />
+              src={require('assets/images/Egress_3_08-11-2020_21:08:57.jpg')}
+              alt='...'
+            />)}
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Salida</h4>
@@ -162,7 +162,7 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <img
                 style={{ height: "180px", width: "100%", display: "block" }}
-                src={suspectedCaseSelected.photo}
+                src={imgRobo}
               />
             </CardHeader>
             <CardBody>

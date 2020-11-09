@@ -12,7 +12,7 @@ import CardHeader from "components/Card/CardHeader";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/images/faces/marc.jpg";
 
 const styles = {
   cardCategoryWhite: {
