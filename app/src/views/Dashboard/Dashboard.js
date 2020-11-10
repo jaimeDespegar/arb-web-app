@@ -140,11 +140,11 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="warning">
-            {departureSelected.photo && (<img
+            <img
               style={{ height: "180px", width: "100%", display: "block" }}
               src={require('assets/images/Egress_3_08-11-2020_21:08:57.jpg')}
               alt='...'
-            />)}
+            />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Salida</h4>
