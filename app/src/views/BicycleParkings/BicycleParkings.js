@@ -79,12 +79,12 @@ export default function BicycleParkings() {
         }
 
         {parkings.map((parking) => (
-          <Grid container className={classes.root} spacing={2}>      
+          <Grid container key ={parking.number} className={classes.root} spacing={2}>      
              
             <Grid item xs={12}>
               <Grid container justify="center" spacing={spacing}>
                 {parking.places.length ? (parking.places.map((place) => (
-                  <Grid key={place.placeNumber} item>
+                  <Grid key={parking.number + '_' + place.placeNumber } item>
                     <Paper elevation={8} className={classes.paper} 
                            children={place.occupied ? <div><DirectionsBike fontSize='large'/></div> : <div><PlaceIcon fontSize='large'/></div>}
                            style={{'backgroundColor': place.occupied ? '#ef5350':'#66bb6a'}}/>

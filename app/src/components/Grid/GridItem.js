@@ -15,11 +15,19 @@ const useStyles = makeStyles(styles);
 
 export default function GridItem(props) {
   const classes = useStyles();
-  const { children, ...rest } = props;
+  const { children, visible, ...rest } = props;
   return (
-    <Grid item {...rest} className={classes.grid}>
-      {children}
-    </Grid>
+    <>
+    {
+      (visible===undefined?true:visible) ? 
+      ( 
+        <Grid item {...rest} className={classes.grid}>
+          {children}
+        </Grid>
+      ) : 
+      '' 
+    }
+    </>
   );
 }
 

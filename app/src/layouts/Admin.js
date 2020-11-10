@@ -74,29 +74,6 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
-  // initialize and destroy the PerfectScrollbar plugin
-  const login = () => {
-    //const data = { 'username': 'user-web', 'password': 'user1234' } 
-    const data = { 'username': 'user-web', 'password': 'user1234' }
-
-    if (axios.defaults.headers.common.Authorization) {
-      axios.defaults.headers.common.Authorization = null;
-    }
-
-    axios
-      .post("http://127.0.0.1:8000/api/auth/login/", data)
-      .then(res => res.data)
-      .then((result) => {
-        const { token } = result;
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
-        console.log('User logged')
-       })
-      .catch((error) => { console.log('Not Loggin: ', error) })
-  }
-
-  React.useEffect(() => {
-    login();
-  }, []);
 
   React.useEffect(() => {
     

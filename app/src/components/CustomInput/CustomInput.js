@@ -25,7 +25,8 @@ export default function CustomInput(props) {
     error,
     success,
     value,
-    onChange
+    onChange,
+    type
   } = props;
 
   const labelClasses = classNames({
@@ -63,6 +64,7 @@ export default function CustomInput(props) {
         id={id}
         value={value}
         onChange={onChange}
+        type={type}
         {...inputProps}
       />
       {error ? (
