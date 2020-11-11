@@ -3,16 +3,18 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Notifications from "@material-ui/icons/Notifications";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import Person from '@material-ui/icons/Person'
+import HomeIcon from '@material-ui/icons/Home';
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import BicycleParkings from "views/BicycleParkings/BicycleParkings.js";
 import History from "views/History/history.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import Login from "views/Login/Login.js"
-import HomeIcon from '@material-ui/icons/Home';
+import Users from "views/UserProfile/UserProfile.js"
+import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
 
 const dashboardRoutes = [
   {
-    path: "/user",
+    path: "/home",
     name: "Home",
     icon: HomeIcon,
     component: Login,
@@ -23,6 +25,13 @@ const dashboardRoutes = [
     name: "Estadias",
     icon: DirectionsBike,
     component: DashboardPage,
+    layout: "/admin"
+  },
+  {
+    path: "/authorizationStays",
+    name: "Autorizaciones",
+    icon: DirectionsBike,
+    component: AuthorizationStays,
     layout: "/admin"
   },
   {
@@ -39,11 +48,18 @@ const dashboardRoutes = [
     component: History,
     layout: "/admin"
   },
+  // {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: Notifications,
+  //   component: NotificationsPage,
+  //   layout: "/admin"
+  // },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-    component: NotificationsPage,
+    path: "/users",
+    name: "Usuarios",
+    icon: Person,
+    component: Users,
     layout: "/admin"
   },
 ];

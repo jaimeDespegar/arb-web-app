@@ -33,12 +33,12 @@ export default function Login() {
   const classes = useStyles();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [showLogin, setShowLogin] = useState(true)
+  const [showLogin, setShowLogin] = useState(!axios.defaults.headers.common.Authorization)
 
   const login = () => {
 
     if (axios.defaults.headers.common.Authorization) {
-      axios.defaults.headers.common.Authorization = null;
+      //axios.defaults.headers.common.Authorization = null;
     }
 
     const data = { 'username': userName, 'password': password }
