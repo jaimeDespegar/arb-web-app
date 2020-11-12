@@ -64,11 +64,14 @@ export default function History() {
     })
   }
 
-  const photoBtn = () => <Button color="info" onClick={() => alert("Mostrar fotos")}>Verificar</Button>
+  const photoBtn = () => {
+    return <Button color="info" onClick={() => alert("Mostrar fotos")}>Verificar</Button>
+  }
+
   const actionsBtn = (item) => {
     return (<>
-              <Button color="success" onClick={() => authorize(item, true)}>Autorizar</Button>
-              <Button color="danger" onClick={() => authorize(item, false)}>Denegar</Button>
+              <Button color="success" disabled={item.isAuthorize===true} onClick={() => authorize(item, true)}>Autorizar</Button>
+              <Button color="danger" disabled={item.isAuthorize===false} onClick={() => authorize(item, false)}>Denegar</Button>
             </>)
   }
 
@@ -78,8 +81,10 @@ export default function History() {
       return (isAuthorize === undefined || isAuthorize === null) ? 'Sin resolver' : (isAuthorize===true ? 'Aceptado': 'Denegado')
     }
 
+    const filter = userName ? '?userName='+userName : ''
+
     axios
-    .get("http://127.0.0.1:8000/api/estadia/pendings")
+    .get("http://127.0.0.1:8000/api/estadia/pendings"+filter)
     .then(res => res.data)
     .then((pendings) => {
       const values = [];
@@ -90,13 +95,13 @@ export default function History() {
                      photoBtn(), actionsBtn(item)]
         values.push(value);
       })
-      console.log('values ', values);
       setPendingStays(values);
     })
     .catch((error) => { 
       console.log(error) 
     })
   }
+
 
   useEffect(() => { findItems() }, [])
 
