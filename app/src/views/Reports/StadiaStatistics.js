@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
@@ -16,6 +16,7 @@ import {
 
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,11 +24,33 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TrafficByDevice = ({ className, ...rest }) => {
+const StadiaStatistics = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const EXITOSAS = 30
-  const SOSPECHOSAS = 70
+  //const EXITOSAS = 30
+  //const SOSPECHOSAS = 70
+  const token = axios.defaults.headers.common.Authorization//VER !!
+  const [suspected, setSuspected] = useState({});
+
+  //hacer un GET de estadias, traer los datos desde la API ya resueltos 
+  // y desde lo web solo lo muestro
+  const findEstadiasReportesAll = () => {
+    axios
+    .get("http://127.0.0.1:8000/api/estadia/reports/")
+    .then(res => res.data)
+    .then((result) => {
+      console.log(result)
+      setSuspected(result)
+      //result.forEach((e) => {
+      //  suspectedCases.push('En el lugar ' + e.place +', dueño '+e.userName)
+      //  suspectedCasesItems.push(e)
+      //})
+      //suspectedCases.forEach((item, key) => { suspectedCasesIndex.push(key); });
+    })
+    .catch((error) => { console.log(error) })
+  }
+  const EXITOSAS = suspected.Sospechosas
+  const SOSPECHOSAS = suspected.Ok
 
   const data = {
     datasets: [
@@ -81,6 +104,14 @@ const TrafficByDevice = ({ className, ...rest }) => {
       color: colors.red[600]
     }
   ];
+
+
+
+
+
+useEffect(() => { 
+    findEstadiasReportesAll();
+  }, []);
 
   return (
     <Card
@@ -137,8 +168,8 @@ const TrafficByDevice = ({ className, ...rest }) => {
   );
 };
 
-TrafficByDevice.propTypes = {
+StadiaStatistics.propTypes = {
   className: PropTypes.string
 };
 
-export default TrafficByDevice;
+export default StadiaStatistics;
