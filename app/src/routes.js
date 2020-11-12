@@ -11,6 +11,8 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 import Login from "views/Login/Login.js"
 import Users from "views/UserProfile/UserProfile.js"
 import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
+import Reports from "views/Reports/TrafficByDevice.js"
+import DataUsageIcon from '@material-ui/icons/DataUsage';
 
 const dashboardRoutes = [
   {
@@ -60,6 +62,13 @@ const dashboardRoutes = [
     name: "Usuarios",
     icon: Person,
     component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/report",
+    name: "Reportes",
+    icon: DataUsageIcon,
+    component: Reports,
     layout: "/admin"
   },
 ];
