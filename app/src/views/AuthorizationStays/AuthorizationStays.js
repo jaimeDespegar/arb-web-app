@@ -44,20 +44,23 @@ export default function History() {
   const authorize = (item, value) => {
 
     const data = {
-      userName: '',
-      bicycleParking: 1,
-      place: 0,
+      userName: item.userName,
+      bicycleParking: item.bicycleParking.number,
+      place: item.place,
       isAuthorize: value
     }
+
+    const message = value ? 'aceptada' : 'denegada'
 
     axios
     .post("http://127.0.0.1:8000/api/estadia/authorize", data)
     .then(res => res.data)
     .then((result) => {
-      
+      alert('La estadia fue ' + message + ' con exito para el usuario ' + item.userName)
     })
     .catch((error) => { 
-      console.log(error) 
+      console.error(error);
+      alert('Se produjo un error inesperado al accionar sobre la estadia seleccionada')
     })
   }
 
@@ -70,13 +73,21 @@ export default function History() {
   }
 
   const findItems = () => {
+    axios.defaults.headers.common.Authorization = 'Token 102db47a082861a2d59da854a33aa1166df2e02f'
+    const buildState = (isAuthorize) => {
+      return (isAuthorize === undefined || isAuthorize === null) ? 'Sin resolver' : (isAuthorize===true ? 'Aceptado': 'Denegado')
+    }
+
     axios
     .get("http://127.0.0.1:8000/api/estadia/pendings")
     .then(res => res.data)
     .then((pendings) => {
       const values = [];
       pendings.map( (item) => {
-        let value = [item.userName, 1, item.place, item.dateCreated, photoBtn(), actionsBtn()]
+        let value = [item.userName, item.bicycleParking.description, item.place, 
+                     format(new Date(item.dateCreated), 'HH:mm:ss dd/MM/yyyy  '),
+                     buildState(item.isAuthorize),
+                     photoBtn(), actionsBtn(item)]
         values.push(value);
       })
       console.log('values ', values);
@@ -100,7 +111,7 @@ export default function History() {
               <GridContainer style={{ display: "flex", justifyContent: "center", 
                 alignItems: "center"
               }}>
-                <GridItem xs={12} sm={12} md={4} >
+                <GridItem xs={12} sm={12} md={8} >
                     <Grid container justify="space-around" >
                       <CustomInput
                         labelText="Nombre de usuario"
@@ -129,7 +140,7 @@ export default function History() {
           <CardBody>
             <Table
               tableHeaderColor="info"
-              tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Fotos", "Acciones"]}
+              tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Estado", "Fotos", "Acciones"]}
               tableData={pendingStays}
             />
           </CardBody>
