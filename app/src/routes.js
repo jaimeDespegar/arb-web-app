@@ -11,6 +11,7 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 import Login from "views/Login/Login.js"
 import Users from "views/UserProfile/UserProfile.js"
 import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
+import Reports from "views/Reports/TrafficByDevice.js"
 
 const dashboardRoutes = [
   {
@@ -60,6 +61,13 @@ const dashboardRoutes = [
     name: "Usuarios",
     icon: Person,
     component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/report",
+    name: "Reportes",
+    icon: Person,
+    component: Reports,
     layout: "/admin"
   },
 ];
