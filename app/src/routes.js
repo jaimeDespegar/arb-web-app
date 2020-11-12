@@ -13,6 +13,7 @@ import Users from "views/UserProfile/UserProfile.js"
 import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
 import Reports from "views/Reports/StadiaStatistics.js"
 import DataUsageIcon from '@material-ui/icons/DataUsage';
+import DashboardReport from 'views/Reports/Dashboard.js'
 
 const dashboardRoutes = [
   {
@@ -69,6 +70,13 @@ const dashboardRoutes = [
     name: "Reportes",
     icon: DataUsageIcon,
     component: Reports,
+    layout: "/admin"
+  },
+    {
+    path: "/dashboardReport",
+    name: "Reportes Example",
+    icon: DataUsageIcon,
+    component: DashboardReport,
     layout: "/admin"
   },
 ];

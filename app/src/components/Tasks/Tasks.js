@@ -25,7 +25,7 @@ export default function Tasks(props) {
           <TableRow key={value} className={classes.tableRow}>
             <TableCell className={tableCellClasses}>
               <Radio
-                checked={checked.indexOf(value) !== -1}
+                checked={checked ? checked.indexOf(value) !== -1 : false}
                 tabIndex={value}
                 onChange={() => onChangeRadio(value, checked, setChecked,  tasks, setItemSelected, items,  newChecked, setNewChecked)}
                 icon={<FiberManualRecord className={classes.radioUnchecked} />}
