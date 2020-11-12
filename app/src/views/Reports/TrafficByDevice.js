@@ -13,9 +13,9 @@ import {
   makeStyles,
   useTheme
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIcon from '@material-ui/icons/Phone';
-import TabletIcon from '@material-ui/icons/Tablet';
+
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,22 +26,23 @@ const useStyles = makeStyles(() => ({
 const TrafficByDevice = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const EXITOSAS = 30
+  const SOSPECHOSAS = 70
 
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [EXITOSAS,SOSPECHOSAS],
         backgroundColor: [
           colors.indigo[500],
-          colors.red[600],
-          colors.orange[600]
+          colors.red[600]
         ],
         borderWidth: 8,
         borderColor: colors.common.white,
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Exitosas', 'Sospechosas']
   };
 
   const options = {
@@ -68,22 +69,16 @@ const TrafficByDevice = ({ className, ...rest }) => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: 30,
-      icon: LaptopMacIcon,
+      title: 'Exitosas',
+      value: EXITOSAS,
+      icon: HowToRegIcon,
       color: colors.indigo[500]
     },
     {
-      title: 'Tablet',
-      value: 45,
-      icon: TabletIcon,
+      title: 'Sospechosas',
+      value: SOSPECHOSAS,
+      icon: ImageSearchIcon,
       color: colors.red[600]
-    },
-    {
-      title: 'Mobile',
-      value: 25,
-      icon: PhoneIcon,
-      color: colors.orange[600]
     }
   ];
 
@@ -92,7 +87,7 @@ const TrafficByDevice = ({ className, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Traffic by Device" />
+      <CardHeader title="Estadísticas de estadías" />
       <Divider />
       <CardContent>
         <Box
