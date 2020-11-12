@@ -49,8 +49,8 @@ const StadiaStatistics = ({ className, ...rest }) => {
     })
     .catch((error) => { console.log(error) })
   }
-  const EXITOSAS = suspected.Sospechosas
-  const SOSPECHOSAS = suspected.Ok
+  const EXITOSAS = suspected.Ok
+  const SOSPECHOSAS = suspected.Sospechosas
 
   const data = {
     datasets: [
