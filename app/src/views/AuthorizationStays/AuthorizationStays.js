@@ -2,6 +2,7 @@ import React, { useEffect , useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import AccessTime from "@material-ui/icons/AccessTime";
 import CustomInput from "components/CustomInput/CustomInput";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
@@ -10,27 +11,17 @@ import CardFooter from "components/Card/CardFooter.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import axios from 'axios';
+import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
-const styles = {
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  }
-};
 
 const useStyles = makeStyles(styles);
 
@@ -40,6 +31,15 @@ export default function History() {
   const [pendingStays, setPendingStays] = useState([]);
   const [userName, setUserName] = useState('');
   const [data, setData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const openModalPhotos = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };  
 
   const authorize = (item, value) => {
 
@@ -65,7 +65,7 @@ export default function History() {
   }
 
   const photoBtn = () => {
-    return <Button color="info" onClick={() => alert("Mostrar fotos")}>Verificar</Button>
+    return <Button color="info" onClick={() => openModalPhotos()}>Verificar</Button>
   }
 
   const actionsBtn = (item) => {
@@ -150,6 +150,56 @@ export default function History() {
             />
           </CardBody>
         </Card>
+      </GridItem>
+      <GridItem>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
+          <DialogTitle id="form-dialog-title">Fotos sobre el pedido</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Visualize las fotos para determinar si aceptar o rechazar el pedido
+            </DialogContentText>
+            <Grid container>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="success">
+                  <img
+                    style={{ height: "200px", width: "100%", display: "block" }}
+                    src={require('assets/images/Egress_3_11-11-2020_14:27:48.jpg')}
+                    alt='...'
+                  />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Entrada de la bicicleta</h4>
+                </CardBody>
+                <CardFooter chart>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="warning">
+                  <img
+                    style={{ height: "200px", width: "100%", display: "block" }}
+                    src={require('assets/images/Egress_3_11-11-2020_14:27:48.jpg')}
+                    alt='...'
+                  />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Perfil del usuario</h4>
+                </CardBody>
+                <CardFooter chart>
+                  
+                </CardFooter>
+              </Card>
+            </GridItem>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>              
       </GridItem>
     </GridContainer>
   );
