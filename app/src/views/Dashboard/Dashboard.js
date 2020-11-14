@@ -18,7 +18,7 @@ import { completedTasksChart } from "variables/charts.js";
 import { format } from 'date-fns'
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import imgRobo from 'assets/images/Egress_4_11-11-2020_14:28:18.jpg'
+import imgRobo from 'assets/images/Egress_4_12-11-2020_20:45:22.jpg'
 
 const useStyles = makeStyles(styles);
 
@@ -121,7 +121,7 @@ export default function Dashboard() {
           <Card chart>
             <CardHeader color="success">
             <img style={{ height: "180px", width: "100%", display: "block" }}
-                 src={require('assets/images/Entrance_2_11-11-2020_14:27:42.jpg')}
+                 src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
                  alt="..." />
             </CardHeader>
             <CardBody>
@@ -142,7 +142,7 @@ export default function Dashboard() {
             <CardHeader color="warning">
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              src={require('assets/images/Egress_3_11-11-2020_14:27:48.jpg')}
+              src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
               alt='...'
             />
             </CardHeader>

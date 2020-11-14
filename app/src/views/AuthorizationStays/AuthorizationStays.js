@@ -30,7 +30,6 @@ export default function History() {
   const classes = useStyles();
   const [pendingStays, setPendingStays] = useState([]);
   const [userName, setUserName] = useState('');
-  const [data, setData] = useState([]);
   const [open, setOpen] = React.useState(false);
 
   const openModalPhotos = () => {
@@ -76,7 +75,7 @@ export default function History() {
   }
 
   const findItems = () => {
-    axios.defaults.headers.common.Authorization = 'Token 102db47a082861a2d59da854a33aa1166df2e02f'
+
     const buildState = (isAuthorize) => {
       return (isAuthorize === undefined || isAuthorize === null) ? 'Sin resolver' : (isAuthorize===true ? 'Aceptado': 'Denegado')
     }
@@ -164,7 +163,7 @@ export default function History() {
                 <CardHeader color="success">
                   <img
                     style={{ height: "200px", width: "100%", display: "block" }}
-                    src={require('assets/images/Egress_3_11-11-2020_14:27:48.jpg')}
+                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
                     alt='...'
                   />
                 </CardHeader>
@@ -180,7 +179,7 @@ export default function History() {
                 <CardHeader color="warning">
                   <img
                     style={{ height: "200px", width: "100%", display: "block" }}
-                    src={require('assets/images/Egress_3_11-11-2020_14:27:48.jpg')}
+                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
                     alt='...'
                   />
                 </CardHeader>

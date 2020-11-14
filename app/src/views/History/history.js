@@ -12,6 +12,11 @@ import Button from "components/CustomButtons/Button.js";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
@@ -45,7 +50,16 @@ export default function History() {
   const [toDate, setToDate] = useState(new Date());
   const [userName, setUserName] = useState('');
   const [anonymous, setAnonymous] = useState(false);
+  const [suspected, setSuspected] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
+  const openModalPhotos = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };  
 
   const findItems = () => {
     const token = axios.defaults.headers.common.Authorization
@@ -61,6 +75,9 @@ export default function History() {
     if (anonymous) {
       filters+="&isAnonymous="+(anonymous?"True":"False");
     }
+    if (suspected) {
+      filters+="&isSuspected="+(suspected?"True":"False");
+    }
     if (userName) {
       filters+="&userName="+userName;
     }
@@ -74,7 +91,8 @@ export default function History() {
                                              'ungs', 
                                              item.placeUsed.toString(), 
                                              format(new Date(item.dateCreated), 'dd/MM/yyyy HH:mm:ss'), 
-                                             <Button color="primary"> Ver </Button>
+                                             'SI/NO',
+                                             <Button color="primary" onClick={() => openModalPhotos()}> Ver </Button>
                                             ])
           setData(values);
         }
@@ -141,11 +159,9 @@ export default function History() {
               </GridContainer>
               
               <GridContainer style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-                <GridItem xs={12} sm={12} md={4} >
+                display: "flex", justifyContent: "center", alignItems: "center"
+              }}>
+                <GridItem xs={12} sm={12} md={3} >
                     <Grid container justify="space-around" >
                       <CustomInput
                         labelText="Nombre de usuario"
@@ -158,8 +174,7 @@ export default function History() {
                       />
                     </Grid>
                 </GridItem>
-
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={3}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -169,11 +184,23 @@ export default function History() {
                         color="primary"
                       />
                     }
-                    label="Incluir Anonimas"
+                    label="Solo anonimas"
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={3}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={suspected}
+                        onChange={(event) => { setSuspected(event.target.checked) }}
+                        name="checkedB"
+                        color="primary"
+                      />
+                    }
+                    label="Solo sospechosas"
                   />
                 </GridItem>
               </GridContainer>
-
             </CardBody>
             <CardFooter>
               <Button color="info" onClick={() => findItems()}>Buscar</Button>
@@ -189,11 +216,61 @@ export default function History() {
           <CardBody>
             <Table
               tableHeaderColor="info"
-              tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Fotos"]}
+              tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Sospechosa", "Fotos"]}
               tableData={data}
             />
           </CardBody>
         </Card>
+      </GridItem>
+
+      <GridItem>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
+          <DialogTitle id="form-dialog-title">Fotos de la estadia</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {/* Acontinuacion la Entrada - Salida */}
+            </DialogContentText>
+            <Grid container>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="success">
+                  <img
+                    style={{ height: "200px", width: "100%", display: "block" }}
+                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                    alt='...'
+                  />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Entrada de la bicicleta</h4>
+                </CardBody>
+                <CardFooter chart>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="warning">
+                  <img
+                    style={{ height: "200px", width: "100%", display: "block" }}
+                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                    alt='...'
+                  />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Salida de la bicicleta</h4>
+                </CardBody>
+                <CardFooter chart>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>              
       </GridItem>
     </GridContainer>
   );
