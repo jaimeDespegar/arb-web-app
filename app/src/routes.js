@@ -15,6 +15,8 @@ import Reports from "views/Reports/StadiaStatistics.js"
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import DashboardReport from 'views/Reports/Dashboard.js'
 import ReportsWeek from 'views/Reports/StadiaStatisticsWeek.js'
+import ReportsRange from 'views/Reports/StadiaStatisticsRange.js'
+
 
 const dashboardRoutes = [
   {
@@ -85,6 +87,13 @@ const dashboardRoutes = [
     name: "ReportesWeek",
     icon: DataUsageIcon,
     component: ReportsWeek,
+    layout: "/admin"
+  },
+  {
+    path: "/reportRange",
+    name: "ReportesRange",
+    icon: DataUsageIcon,
+    component: ReportsRange,
     layout: "/admin"
   },
 ];

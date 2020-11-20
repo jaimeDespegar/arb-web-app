@@ -57,6 +57,9 @@ export default function UserProfile() {
   const [movieCreate, setMovieCreate] = React.useState('');
 
   const [users, setUsers] = React.useState([]);
+  const [owner, setOwner] = React.useState([]); 
+
+  const [username, setUsername] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,7 +103,7 @@ export default function UserProfile() {
     }
 
     if (isEdit) {
-      confirmUpdateUser(params);
+      confirmUpdateUser(data);
     } else {
       createUser(params, token);
     }
@@ -127,19 +130,33 @@ export default function UserProfile() {
 
   const findUsers = () => {
     const token = axios.defaults.headers.common.Authorization;
+
+    const filter = username ? '?user.username='+username : ''
     
+    //.get("http://127.0.0.1:8000/api/bikeOwnerParser-getAll/"+filter)
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/api/bikeOwner-getAll/'")
+        .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter)
         .then(res => res.data)
         .then((result) => {
-          setUsers(result);
+          let values = result.map((item) => [item.username, 
+                                             item.email, 
+                                             "bikeOwner",
+                                             <Button color="warning" onClick={e => updateUser(item)}> Editar </Button>,
+                                             <Button color="danger" onClick={e => deleteUser(item)}> Borrar </Button>,
+                                            ])
+
+
+          setUsers(values);
+          console.log("bikeOwner-getAll: ",result);
         })
         .catch((error) => { console.log('Error bike Owner getAll ', error) })  
     } else {
       console.log('User: no hay token')
     }
   }
+
+
   const updateUser = (user) => {
     setUserNameCreate(user.username);
     setPasswordCreate(user.password);
@@ -154,10 +171,10 @@ export default function UserProfile() {
   }
   const confirmUpdateUser = (user) => {
     const token = axios.defaults.headers.common.Authorization;
- 
+  
     if (token) {
       axios
-        .put("http://127.0.0.1:8000/api/bikeOwner-update/"+ user.username +'/', user)
+        .put("http://127.0.0.1:8000/api/bikeOwner/update/"+user.username +'/', user)
         .then(res => res.data)
         .then((result) => {
           alert('Usuario Actualizado');
@@ -175,7 +192,7 @@ export default function UserProfile() {
 
     if (token) {
       axios
-        .delete("http://127.0.0.1:8000/api/bikeOwner-delete/"+ user.username+"/")
+        .delete("http://127.0.0.1:8000/api/bikeOwner-delete/"+ user.username+"/",user)
         .then(res => res.data)
         .then((result) => {
           alert('bikeOwner eliminado')
@@ -203,13 +220,15 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Ingrese el nombre de un usuario"
                     id="first-name"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6} style={{marginTop: 25}}>
-                  <Button color="info">Buscar</Button>
+                  <Button color="info" onClick={() => findUsers()}>Buscar</Button>
                   <Button color="success" onClick={handleClickOpen}>Nuevo</Button>
                 </GridItem>
               </GridContainer>
@@ -224,13 +243,13 @@ export default function UserProfile() {
           <CardHeader color="primary">
             <h4 className={classes.cardTitleWhite}>Resultados</h4>
           </CardHeader>
-          {/* <CardBody>
+          <CardBody>
             <Table
               tableHeaderColor="info"
-              tableHead={["Usuario", "Email", "Tipo", "Acciones"]}
-              tableData={data}
+              tableHead={["Usuario", "Email", "Tipo", "Editar", "Borrar"]}
+              tableData={users}
             />
-          </CardBody> */}
+          </CardBody>
         </Card>
       </GridItem>
       </GridContainer>
@@ -257,10 +276,6 @@ export default function UserProfile() {
                     <Grid item xs={12} sm={12} md={6} style={{marginTop:15}}>
                       <FormLabel>{user.email}</FormLabel>
                     </Grid>  
-                  <Grid item xs={12} sm={12} md={6} style={{marginTop:0, display:'flex', justifyContent:'flex-end'}}>
-                      <Button color="warning" onClick={e => updateUser(user)}> Editar </Button>
-                      <Button color="danger" onClick={e => deleteUser(user)}> Borrar </Button>
-                  </Grid>
                   </Grid>
              </Paper>
            </Grid>
@@ -292,7 +307,7 @@ export default function UserProfile() {
               margin="dense"
               id="passwordCreate"
               label="Contraseña"
-              type="email"
+              type="password"
               value={passwordCreate}
               onChange={e=>setPasswordCreate(e.target.value)}
               fullWidth
