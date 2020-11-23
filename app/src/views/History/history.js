@@ -21,6 +21,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import axios from 'axios';
+import ExportExcel from 'react-export-excel';
+
+const ExcelFile = ExportExcel.ExcelFile;
+const ExcelSheet = ExportExcel.ExcelSheet;
+const ExcelColumn = ExportExcel.ExcelColumn;
 
 const styles = {
   cardTitleWhite: {
@@ -60,7 +65,7 @@ export default function History() {
   const handleClose = () => {
     setOpen(false);
   };  
-
+  const [history, setHistory] = useState([]);
   const findItems = () => {
     const token = axios.defaults.headers.common.Authorization
     console.log('history token ', token)
@@ -87,6 +92,7 @@ export default function History() {
       .get("http://127.0.0.1:8000/api/estadia/find" + filters)
       .then(res => res.data)
       .then((result) => {
+          setHistory(result)
           let values = result.map((item) => [item.userName, 
                                              'ungs', 
                                              item.placeUsed.toString(), 
@@ -219,6 +225,13 @@ export default function History() {
               tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Sospechosa", "Fotos"]}
               tableData={data}
             />
+            <ExcelFile element={<button>Exportar a excel</button>} filename="Historial">
+                    <ExcelSheet data={history} name="Historial">
+                      <ExcelColumn label="lugar" value="placeUsed"/>
+                      <ExcelColumn label="fecha" value="dateCreated"/>
+                      <ExcelColumn label="usuario" value="userName"/>
+                    </ExcelSheet>  
+                  </ExcelFile>
           </CardBody>
         </Card>
       </GridItem>

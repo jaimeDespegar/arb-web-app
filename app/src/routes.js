@@ -16,6 +16,10 @@ import DataUsageIcon from '@material-ui/icons/DataUsage';
 import DashboardReport from 'views/Reports/Dashboard.js'
 import ReportsWeek from 'views/Reports/StadiaStatisticsWeek.js'
 import ReportsRange from 'views/Reports/StadiaStatisticsRange.js'
+import ReportsAllHour from 'views/Reports/StadiaStatistcsHourAll.js'
+import ReportsAllSuspectedAndPeakTimeAll from 'views/Reports/StadiaStatistcsSuspectedAndPeakTimeAll.js'
+import ReportsNavigation from 'views/Reports/SimpleBottomNavigation.js'
+
 
 
 const dashboardRoutes = [
@@ -70,7 +74,7 @@ const dashboardRoutes = [
   },
   {
     path: "/report",
-    name: "Reportes",
+    name: "ReportesExitosas",
     icon: DataUsageIcon,
     component: Reports,
     layout: "/admin"
@@ -96,6 +100,28 @@ const dashboardRoutes = [
     component: ReportsRange,
     layout: "/admin"
   },
+  {
+    path: "/reportRangeHour",
+    name: "ReportesHours",
+    icon: DataUsageIcon,
+    component: ReportsAllHour,
+    layout: "/admin"
+  },
+  {
+    path: "/reportRangeHourSuspectedAndPeakTimeAll",
+    name: "ReportesPeakTime",
+    icon: DataUsageIcon,
+    component: ReportsAllSuspectedAndPeakTimeAll,
+    layout: "/admin"
+  },
+  {
+    path: "/SimpleBottomNavigation",
+    name: "ReportesNavigation",
+    icon: DataUsageIcon,
+    component: ReportsNavigation,
+    layout: "/admin"
+  },
+
 ];
 
 export default dashboardRoutes;

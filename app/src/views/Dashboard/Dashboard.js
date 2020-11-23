@@ -19,12 +19,24 @@ import { format } from 'date-fns'
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import imgRobo from 'assets/images/Egress_4_12-11-2020_20:45:22.jpg'
+import Button from "components/CustomButtons/Button.js";
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import ExportExcel from 'react-export-excel';
+
+const ExcelFile = ExportExcel.ExcelFile;
+const ExcelSheet = ExportExcel.ExcelSheet;
+const ExcelColumn = ExportExcel.ExcelColumn;
 
 const useStyles = makeStyles(styles);
 
 
 export default function Dashboard() {
-
+  const [data, setData] = useState([]);
   const classes = useStyles();
   //const [stays, setStays] = useState([]);
   const [arrivals] = useState([]);
@@ -48,6 +60,7 @@ export default function Dashboard() {
   const [newCheckedD, setNewCheckedD] = React.useState([]);
   const [newCheckedS, setNewCheckedS] = React.useState([]);
 
+  const [username, setUsername] = useState('');
   const handleToggle = (value, checkedList, setChecked, tasks, setItemSelected, items, newChecked, setNewChecked) => {
     const currentIndex = checkedList.indexOf(value);
     setNewChecked([]);
@@ -105,15 +118,72 @@ export default function Dashboard() {
     .catch((error) => { console.log(error) })
   }
 
+  const [stadiaHabitual, setStadiaHabitual] = useState([]);
+  const [days, setDays] = useState(14);
+  let hourHabitual= []
+  const findEstadiasReportesAll = () => {
+    axios
+    .get("http://127.0.0.1:8000/api/estadia/reportsHourUserWeek/"+suspectedCaseSelected.userName+"/"+days+"/")
+    .then(res => res.data)
+    .then((result) => {
+      console.log(result)
+      hourHabitual= result
+      setStadiaHabitual(result)
+      loadUser()
+      let values = result.map((item) => [item.modo, 
+                                         item.lunes, 
+                                         item.martes, 
+                                         item.miercoles, 
+                                         item.jueves,
+                                         item.viernes,
+                                         item.sabado
+                                            ])
+      setData(values);
+      console.log("data:")
+      console.log(data)
+    })
+    .catch((error) => { console.log(error) })
+  }
+
   const formatDateCreated = (segment) => {
     return segment.dateCreated ? 'Generada: ' + format(new Date(segment.dateCreated), 'dd-MM-yyyy HH:mm:ss'):''
   }
 
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [entranceLunes, setEntranceLunes] = React.useState(0);
+  const [entranceMartes, setEntranceMartes] = React.useState(0);
+  const [entranceMiercoles, setEntranceMiercoles] = React.useState(0);
+  const [entranceJueves, setEntranceJueves] = React.useState(0);
+  const [entranceViernes, setEntranceViernes] = React.useState(0);
+  const [entranceSabado, setEntranceSabado] = React.useState(0);
+
+  const [egressLunes, setEgressLunes] = React.useState(0);
+  const [egressMartes, setEgressMartes] = React.useState(0);
+  const [egressMiercoles, setEgressMiercoles] = React.useState(0);
+  const [egressJueves, setEgressJueves] = React.useState(0);
+  const [egressViernes, setEgressViernes] = React.useState(0);
+  const [egressSabado, setEgressSabado] = React.useState(0);
+
+  const loadUser = () => {
+    setOpen(true);
+  }
+
+  const verUser=()=>{
+    findEstadiasReportesAll()
+  }
+  
   useEffect(() => { 
     findStaysFromToday();
     findSuspectedCases();
+    //findEstadiasReportesAll();
   }, [1]);
-
+  
   return (
     <div>
       <GridContainer>
@@ -168,6 +238,7 @@ export default function Dashboard() {
             <CardBody>
               <h4 className={classes.cardTitle}>Posible Robo</h4>
               <p className={classes.cardCategory}>{suspectedCases[checkedSuspectedCase[0]]}</p>
+              <Button color="danger" onClick={() => verUser()}> ver </Button>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -251,6 +322,54 @@ export default function Dashboard() {
         />
         </GridItem>
       </GridContainer>
+
+
+
+      <GridContainer>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Egreso sospechoso en el lugar: {suspectedCaseSelected.place} </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Ver horarios de ingresos y egresos habituales del usuario: {suspectedCaseSelected.userName}
+            </DialogContentText>
+
+            <GridItem xs={20} sm={20} md={20}>
+              <Card>
+                <CardHeader color="info">
+                  <h4 className={classes.cardTitleWhite}>Horarios habituales</h4>
+                </CardHeader>
+                <CardBody>
+                  <Table
+                    tableHeaderColor="info"
+                    tableHead={[" ","lunes", "martes", "miercoles", "jueves", "viernes", "sabado"]}
+                    tableData={data}
+                  />
+                  <ExcelFile element={<button>Exportar a excel</button>} filename="Caso sospechoso">
+                    <ExcelSheet data={stadiaHabitual} name="Horarios habituales">
+                      <ExcelColumn label=" " value="modo"/>
+                      <ExcelColumn label="lunes" value="lunes"/>
+                      <ExcelColumn label="martes" value="martes"/>
+                      <ExcelColumn label="miercoles" value="miercoles"/>
+                      <ExcelColumn label="jueves" value="jueves"/>
+                      <ExcelColumn label="viernes" value="viernes"/>
+                      <ExcelColumn label="sabado" value="sabado"/>
+                    </ExcelSheet>  
+                  </ExcelFile>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Salir
+            </Button>
+          </DialogActions>
+
+          
+
+        </Dialog>              
+      </GridContainer>
+
     </div>
   );
 }

@@ -25,10 +25,9 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
   console.log("StadiaStatisticsRange")
   const classes = useStyles();
   const theme = useTheme();
-
   const token = axios.defaults.headers.common.Authorization
   const [stadiaRange, setStadiaRange] = useState({});
-
+  
   const findEstadiasReportesAll = () => {
     axios
     .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+7+"/")
