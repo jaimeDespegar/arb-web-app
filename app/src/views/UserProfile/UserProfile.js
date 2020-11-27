@@ -121,6 +121,14 @@ export default function UserProfile() {
             alert('¡Usuario agregado!')
         })
         .catch((error) => { 
+          if(error.response.status === 501){
+          console.log('El usuario ya existe!');
+          alert('¡El usuario ya existe!')
+        }
+        if(error.response.status === 503){
+          console.log('El email ya existe!');
+          alert('¡El email ya existe!')
+        }
           console.log('Error, Usuario no creado', error) 
         })  
     } else {
@@ -182,7 +190,12 @@ export default function UserProfile() {
           setIsEdit(false);
           setOpen(false);
         })
-        .catch((error) => { console.error('Error update usuario ', error) })
+        .catch((error) => { console.error('Error update usuario ', error) 
+      if(error.response.status === 503){
+          console.log('El email ya existe!');
+          alert('¡El email ya existe!')
+        }
+      })
     } else {
       console.log('Update usuario: no hay token')
     }
