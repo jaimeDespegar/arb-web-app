@@ -22,11 +22,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const StadiaStatisticsWeek = ({ className, ...rest }) => {
-  console.log("StadiaStatisticsWeek")
+
   const classes = useStyles();
   const theme = useTheme();
-
-  const token = axios.defaults.headers.common.Authorization
   const [suspected, setSuspected] = useState({});
 
   const findEstadiasReportesAll = () => {
