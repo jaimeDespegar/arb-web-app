@@ -93,7 +93,7 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
       <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>Elija una semana para ver sus estadias habituales</h4>
+              <h4 className={classes.cardTitleWhite}>Elija una semana para ver horarios de mayor concurrencia y de casos sospechosos</h4>
             </CardHeader>
             <CardBody>
               <GridContainer >
