@@ -11,6 +11,7 @@ import Users from "views/UserProfile/UserProfile.js"
 import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import ReportsNavigation from 'views/Reports/SimpleBottomNavigation.js'
+import PanelControlWebEstadias from 'views/PanelControl/CleanOldEstadias.js'
 
 
 const dashboardRoutes = [
@@ -61,6 +62,13 @@ const dashboardRoutes = [
     name: "Reportes",
     icon: DataUsageIcon,
     component: ReportsNavigation,
+    layout: "/admin"
+  },
+  {
+    path: "/PanelControlWebEstadias",
+    name: "CleanOldEstadias",
+    icon: DataUsageIcon,
+    component: PanelControlWebEstadias,
     layout: "/admin"
   },
 
