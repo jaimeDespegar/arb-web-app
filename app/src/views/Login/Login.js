@@ -44,7 +44,7 @@ export default function Login() {
       .then(response => {
         const { token } = response.data;
         axios.defaults.headers.common.Authorization = `Token ${token}`;
-        alert('Hola ' + userName+'. Ya puede navegar en Arb App Web.');
+        alert('Hola ' + userName+'. Ya puede navegar en ARB');
         setUserName('');
         setPassword('');
         setShowLogin(false);
@@ -62,7 +62,7 @@ export default function Login() {
       .get("http://127.0.0.1:8000/api/auth/logout/")
       .then(response => {
         axios.defaults.headers.common.Authorization = null;
-        alert('!Adios! Gracias por usar Arb App Web');
+        alert('!Adios! Gracias por usar ARB');
         setShowLogin(true);
       })
       .catch((error) => { 
