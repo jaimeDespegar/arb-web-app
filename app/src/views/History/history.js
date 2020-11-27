@@ -12,11 +12,7 @@ import Button from "components/CustomButtons/Button.js";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogCustom from 'components/Dialog/DialogCustom';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
@@ -237,50 +233,45 @@ export default function History() {
       </GridItem>
 
       <GridItem>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
-          <DialogTitle id="form-dialog-title">Fotos de la estadia</DialogTitle>
-          <DialogContent>
-            <Grid container>
-            <GridItem xs={12} sm={12} md={6}>
-              <Card chart>
-                <CardHeader color="success">
-                  <img
-                    style={{ height: "200px", width: "100%", display: "block" }}
-                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
-                    alt='...'
-                  />
-                </CardHeader>
-                <CardBody>
-                  <h4 className={classes.cardTitle}>Entrada de la bicicleta</h4>
-                </CardBody>
-                <CardFooter chart>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <Card chart>
-                <CardHeader color="warning">
-                  <img
-                    style={{ height: "200px", width: "100%", display: "block" }}
-                    src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
-                    alt='...'
-                  />
-                </CardHeader>
-                <CardBody>
-                  <h4 className={classes.cardTitle}>Salida de la bicicleta</h4>
-                </CardBody>
-                <CardFooter chart>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>              
+        <DialogCustom titleDialog={"Fotos de la estadia"} isEditionDialog={false}
+                      isOpen={open} closeFunction={handleClose}
+                      componentContent={
+                        <Grid container>
+                          <GridItem xs={12} sm={12} md={6}>
+                            <Card chart>
+                              <CardHeader color="success">
+                                <img
+                                  style={{ height: "200px", width: "100%", display: "block" }}
+                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  alt='...'
+                                />
+                              </CardHeader>
+                              <CardBody>
+                                <h4 className={classes.cardTitle}>Entrada de la bicicleta</h4>
+                              </CardBody>
+                              <CardFooter chart>
+                              </CardFooter>
+                            </Card>
+                          </GridItem>
+                          <GridItem xs={12} sm={12} md={6}>
+                            <Card chart>
+                              <CardHeader color="warning">
+                                <img
+                                  style={{ height: "200px", width: "100%", display: "block" }}
+                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  alt='...'
+                                />
+                              </CardHeader>
+                              <CardBody>
+                                <h4 className={classes.cardTitle}>Salida de la bicicleta</h4>
+                              </CardBody>
+                              <CardFooter chart>
+                              </CardFooter>
+                            </Card>
+                          </GridItem>
+                        </Grid>
+                      }>
+        </DialogCustom>
       </GridItem>
     </GridContainer>
   );
