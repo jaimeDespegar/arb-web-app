@@ -2,11 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import FolderIcon from '@material-ui/icons/Folder';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import ViewWeekIcon from '@material-ui/icons/ViewWeek';
+import GridItem from "components/Grid/GridItem";
+import GridContainer from "components/Grid/GridContainer";
+import Reports from "views/Reports/StadiaStatistics.js"
 import ReportsWeek from 'views/Reports/StadiaStatisticsWeek.js';
 import ReportsRange from 'views/Reports/StadiaStatisticsRange.js';
 import ReportsAllHour from 'views/Reports/StadiaStatistcsHourAll.js';
@@ -14,24 +15,48 @@ import ReportsAllSuspectedAndPeakTimeAll from 'views/Reports/StadiaStatistcsSusp
 
 const useStyles = makeStyles({
   root: {
-    width: 500,
+    width: '90%',
   },
 });
 
 export default function LabelBottomNavigation() {
+
   const classes = useStyles();
-  const [value, setValue] = React.useState('recents');
+  const [value, setValue] = React.useState('Estadías');
+  const [stayStatistics, setStayStatistics] = React.useState(true);
+  const [reportsWeek, setReportsWeek] = React.useState(false);
+  const [reportsRange, setReportsRange] = React.useState(false);
+  const [reportsAllHour, setReportsAllHour] = React.useState(false);
+  const [reportsAllSuspectedAndPeakTimeAll, setReportsAllSuspectedAndPeakTimeAll] = React.useState(false);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setStayStatistics(newValue === 'stayStatistics');
+    setReportsWeek(newValue === 'Recents');
+    setReportsRange(newValue === 'Favorites');
+    setReportsAllHour(newValue === 'Nearby');
+    setReportsAllSuspectedAndPeakTimeAll(newValue === 'Folder');
   };
 
   return (
-    <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-      <BottomNavigationAction label="Recents" value="recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
-      <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon />} />
+    <>
+    <BottomNavigation value={value} onChange={handleChange} showLabels className={classes.root}>
+      <BottomNavigationAction label="Estadías" value='stayStatistics' icon={<AssessmentIcon />} />
+      <BottomNavigationAction label="Recents" value='Recents' icon={<AssessmentIcon />} />
+      <BottomNavigationAction label="Ingresos/Egresos" value='Favorites'  icon={<AssessmentIcon />} />
+      <BottomNavigationAction label="Habituales" value='Nearby' icon={<ViewWeekIcon />} />
+      <BottomNavigationAction label="Concurrencia/Robos" value='Folder' icon={<DateRangeIcon />} />
     </BottomNavigation>
+    <GridContainer>
+      <GridItem xs={12} sm={12} md={12} style={{ marginTop: 20 }}>
+        {stayStatistics && (<Reports />)}
+        {reportsWeek && (<ReportsWeek />)}
+        {reportsRange && (<ReportsRange />)}
+        {reportsAllHour && (<ReportsAllHour />)}
+        {reportsAllSuspectedAndPeakTimeAll && (<ReportsAllSuspectedAndPeakTimeAll />)}
+      </GridItem>
+    </GridContainer>
+    </>
   );
 }

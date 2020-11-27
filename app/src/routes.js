@@ -1,25 +1,16 @@
 
 import Dashboard from "@material-ui/icons/Dashboard";
-import Notifications from "@material-ui/icons/Notifications";
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import Person from '@material-ui/icons/Person'
 import HomeIcon from '@material-ui/icons/Home';
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import BicycleParkings from "views/BicycleParkings/BicycleParkings.js";
 import History from "views/History/history.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
 import Login from "views/Login/Login.js"
 import Users from "views/UserProfile/UserProfile.js"
 import AuthorizationStays from "views/AuthorizationStays/AuthorizationStays.js"
-import Reports from "views/Reports/StadiaStatistics.js"
 import DataUsageIcon from '@material-ui/icons/DataUsage';
-import DashboardReport from 'views/Reports/Dashboard.js'
-import ReportsWeek from 'views/Reports/StadiaStatisticsWeek.js'
-import ReportsRange from 'views/Reports/StadiaStatisticsRange.js'
-import ReportsAllHour from 'views/Reports/StadiaStatistcsHourAll.js'
-import ReportsAllSuspectedAndPeakTimeAll from 'views/Reports/StadiaStatistcsSuspectedAndPeakTimeAll.js'
 import ReportsNavigation from 'views/Reports/SimpleBottomNavigation.js'
-
 
 
 const dashboardRoutes = [
@@ -58,13 +49,6 @@ const dashboardRoutes = [
     component: History,
     layout: "/admin"
   },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   icon: Notifications,
-  //   component: NotificationsPage,
-  //   layout: "/admin"
-  // },
   {
     path: "/users",
     name: "Usuarios",
@@ -73,50 +57,8 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/report",
-    name: "ReportesExitosas",
-    icon: DataUsageIcon,
-    component: Reports,
-    layout: "/admin"
-  },
-    {
-    path: "/dashboardReport",
-    name: "Reportes Example",
-    icon: DataUsageIcon,
-    component: DashboardReport,
-    layout: "/admin"
-  },
-  {
-    path: "/reportWeek",
-    name: "ReportesWeek",
-    icon: DataUsageIcon,
-    component: ReportsWeek,
-    layout: "/admin"
-  },
-  {
-    path: "/reportRange",
-    name: "ReportesRange",
-    icon: DataUsageIcon,
-    component: ReportsRange,
-    layout: "/admin"
-  },
-  {
-    path: "/reportRangeHour",
-    name: "ReportesHours",
-    icon: DataUsageIcon,
-    component: ReportsAllHour,
-    layout: "/admin"
-  },
-  {
-    path: "/reportRangeHourSuspectedAndPeakTimeAll",
-    name: "ReportesPeakTime",
-    icon: DataUsageIcon,
-    component: ReportsAllSuspectedAndPeakTimeAll,
-    layout: "/admin"
-  },
-  {
     path: "/SimpleBottomNavigation",
-    name: "ReportesNavigation",
+    name: "Reportes",
     icon: DataUsageIcon,
     component: ReportsNavigation,
     layout: "/admin"
