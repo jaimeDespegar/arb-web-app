@@ -240,9 +240,6 @@ export default function History() {
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
           <DialogTitle id="form-dialog-title">Fotos de la estadia</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              {/* Acontinuacion la Entrada - Salida */}
-            </DialogContentText>
             <Grid container>
             <GridItem xs={12} sm={12} md={6}>
               <Card chart>

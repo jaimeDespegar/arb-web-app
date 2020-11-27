@@ -38,7 +38,6 @@ const useStyles = makeStyles(styles);
 export default function Dashboard() {
   const [data, setData] = useState([]);
   const classes = useStyles();
-  //const [stays, setStays] = useState([]);
   const [arrivals] = useState([]);
   const [departures] = useState([]);
   const [suspectedCases] = useState([]);
@@ -181,7 +180,6 @@ export default function Dashboard() {
   useEffect(() => { 
     findStaysFromToday();
     findSuspectedCases();
-    //findEstadiasReportesAll();
   }, [1]);
   
   return (

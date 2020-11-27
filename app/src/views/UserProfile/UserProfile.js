@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 import GridItem from "components/Grid/GridItem";
 import Grid from "@material-ui/core/Grid";
 import GridContainer from "components/Grid/GridContainer";
@@ -55,10 +54,7 @@ export default function UserProfile() {
   const [petCreate, setPetCreate] = React.useState('');
   const [streetCreate, setStreetCreate] = React.useState('');
   const [movieCreate, setMovieCreate] = React.useState('');
-
   const [users, setUsers] = React.useState([]);
-  const [owner, setOwner] = React.useState([]); 
-
   const [username, setUsername] = useState('');
 
   const handleClickOpen = () => {
@@ -141,7 +137,6 @@ export default function UserProfile() {
 
     const filter = username ? '?user.username='+username : ''
     
-    //.get("http://127.0.0.1:8000/api/bikeOwnerParser-getAll/"+filter)
     if (token) {
       axios
         .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter)
@@ -225,7 +220,6 @@ export default function UserProfile() {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Usuarios</h4>
-              {/* <p className={classes.cardCategoryWhite}>Complete your profile</p> */}
             </CardHeader>
             <CardBody>
               <GridContainer>
@@ -267,7 +261,6 @@ export default function UserProfile() {
       </GridItem>
       </GridContainer>
 
-
       <GridContainer>
         {(!users.length) ? 
           (<Grid item xs={12}>
@@ -295,9 +288,6 @@ export default function UserProfile() {
          </Grid>          
         ))}
       </GridContainer>
-
-
-
 
       <GridContainer>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

@@ -2,11 +2,9 @@ import React, { useEffect , useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem";
 import GridContainer from "components/Grid/GridContainer";
-import CustomInput from "components/CustomInput/CustomInput";
 import Button from "components/CustomButtons/Button";
 import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
-import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import axios from "axios";
 
@@ -43,9 +41,9 @@ export default function CleanOldStadias() {
       })
       .catch((error) => { 
         console.log('Error limpiarEstadias ', error) 
-        alert('limpiarEstadias error')
+        alert('Error al limpiar estadías anteriores')
       })
-      }
+    }
   }
 
   return (
