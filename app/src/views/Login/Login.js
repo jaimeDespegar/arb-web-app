@@ -1,4 +1,4 @@
-import React, { useEffect , useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem";
 import GridContainer from "components/Grid/GridContainer";
@@ -37,10 +37,6 @@ export default function Login() {
 
   const login = () => {
 
-    if (axios.defaults.headers.common.Authorization) {
-      //axios.defaults.headers.common.Authorization = null;
-    }
-
     const data = { 'username': userName, 'password': password }
 
     axios
@@ -48,27 +44,25 @@ export default function Login() {
       .then(response => {
         const { token } = response.data;
         axios.defaults.headers.common.Authorization = `Token ${token}`;
-        alert('User logged: ' + userName);
+        alert('Hola ' + userName+'. Ya puede navegar en ARB');
         setUserName('');
         setPassword('');
         setShowLogin(false);
       })
       .catch((error) => { 
         console.log('Error login ', error) 
-        alert('Verifique que los datos ingresados sean correctos')
+        alert('Error al loguerase. Verifique que los datos ingresados sean correctos.')
       })
   }
 
   const logout = () => {
-
-    const data = { 'username': userName }
 
     if (axios.defaults.headers.common.Authorization) {
       axios
       .get("http://127.0.0.1:8000/api/auth/logout/")
       .then(response => {
         axios.defaults.headers.common.Authorization = null;
-        alert('Logout OK');
+        alert('!Adios! Gracias por usar ARB');
         setShowLogin(true);
       })
       .catch((error) => { 

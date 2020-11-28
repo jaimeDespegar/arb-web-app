@@ -14,11 +14,7 @@ import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogCustom from 'components/Dialog/DialogCustom';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -240,52 +236,27 @@ export default function BicycleParkings() {
       </GridContainer>
       
       <GridContainer>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nuevo Bicicletero</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Cargue los datos de su bicicletero
-            </DialogContentText>
-            <TextField
-              id="id-parking"
-              label="Nro de Identificación"
-              type="number"
-              value={numberBicycleParking}
-              onChange={e=>setNumberBicycleParking(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="description"
-              label="Descripción"
-              type="email"
-              value={descriptionParking}
-              onChange={e=>setDescriptionParking(e.target.value)}
-              fullWidth
-            />
-             <TextField
-              id="count-places"
-              label="Cantidad de lugares"
-              type="number"
-              value={countPlaces}
-              onChange={e=>setCountPlaces(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={saveBicycleParking} color="primary">
-              Guardar
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Cancelar
-            </Button>
-          </DialogActions>
-        </Dialog>              
+        <DialogCustom titleDialog={"Nuevo Bicicletero"} isEditionDialog={true}
+                      dialogContentText="Cargue los datos de su bicicletero"
+                      isOpen={open} closeFunction={handleClose} saveFunction={saveBicycleParking}
+                      componentContent={<>
+                                          <TextField
+                                            id="id-parking" label="Nro de Identificación"
+                                            type="number" value={numberBicycleParking}
+                                            onChange={e=>setNumberBicycleParking(e.target.value)}
+                                            InputLabelProps={{ shrink: true, }}
+                                          />
+                                          <TextField
+                                            autoFocus margin="dense" id="description" label="Descripción"
+                                            type="email" value={descriptionParking}
+                                            onChange={e=>setDescriptionParking(e.target.value)} fullWidth
+                                          />
+                                          <TextField
+                                            id="count-places" label="Cantidad de lugares" type="number"
+                                            value={countPlaces} onChange={e=>setCountPlaces(e.target.value)}
+                                            InputLabelProps={{ shrink: true, }}
+                                          /> </>}>
+        </DialogCustom>
       </GridContainer>
     </div>
   );

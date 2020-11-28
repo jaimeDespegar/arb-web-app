@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 import GridItem from "components/Grid/GridItem";
 import Grid from "@material-ui/core/Grid";
 import GridContainer from "components/Grid/GridContainer";
@@ -12,13 +11,9 @@ import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
+import DialogCustom from 'components/Dialog/DialogCustom';
 import Table from "components/Table/Table.js";
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 
 const styles = {
@@ -55,10 +50,7 @@ export default function UserProfile() {
   const [petCreate, setPetCreate] = React.useState('');
   const [streetCreate, setStreetCreate] = React.useState('');
   const [movieCreate, setMovieCreate] = React.useState('');
-
   const [users, setUsers] = React.useState([]);
-  const [owner, setOwner] = React.useState([]); 
-
   const [username, setUsername] = useState('');
 
   const handleClickOpen = () => {
@@ -141,7 +133,6 @@ export default function UserProfile() {
 
     const filter = username ? '?user.username='+username : ''
     
-    //.get("http://127.0.0.1:8000/api/bikeOwnerParser-getAll/"+filter)
     if (token) {
       axios
         .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter)
@@ -163,7 +154,6 @@ export default function UserProfile() {
       console.log('User: no hay token')
     }
   }
-
 
   const updateUser = (user) => {
     setUserNameCreate(user.username);
@@ -225,7 +215,6 @@ export default function UserProfile() {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Usuarios</h4>
-              {/* <p className={classes.cardCategoryWhite}>Complete your profile</p> */}
             </CardHeader>
             <CardBody>
               <GridContainer>
@@ -267,122 +256,93 @@ export default function UserProfile() {
       </GridItem>
       </GridContainer>
 
-
       <GridContainer>
         {(!users.length) ? 
           (<Grid item xs={12}>
              <Paper className={classes.control}>
                <Grid container>
                  <Grid item>
-                   <FormLabel>No hay users registrados.</FormLabel>
+                   <FormLabel>No hay usuarios registrados.</FormLabel>
                  </Grid>
                </Grid>
              </Paper>
           </Grid>) : ''
         }
-
-        {users.map((user) => (
-          <Grid container key ={user.username} className={classes.root} spacing={2}>      
-            <Grid item xs={12}>
-              <Paper className={classes.control}>
-                  <Grid container>
-                    <Grid item xs={12} sm={12} md={6} style={{marginTop:15}}>
-                      <FormLabel>{user.email}</FormLabel>
-                    </Grid>  
-                  </Grid>
-             </Paper>
-           </Grid>
-         </Grid>          
-        ))}
       </GridContainer>
 
-
-
-
       <GridContainer>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nuevo Usuario</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Cargue los datos del Usuario
-            </DialogContentText>
-
-            <TextField
-              id="id-userNameCreate"
-              label="Nombre de usuario"
-              type="email"
-              value={userNameCreate}
-              onChange={e=>setUserNameCreate(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="passwordCreate"
-              label="Contraseña"
-              type="password"
-              value={passwordCreate}
-              onChange={e=>setPasswordCreate(e.target.value)}
-              fullWidth
-            />
-             <TextField
-              id="emailCreate"
-              label="Email"
-              type="email"
-              value={emailCreate}
-              onChange={e=>setEmailCreate(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              id="bicyclePhotoCreate"
-              label="Foto de bicicleta"
-              type="email"
-              value={bicyclePhotoCreate}
-              onChange={e=>setBicyclePhoto(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              id="profilePhotoCreate"
-              label="Foto de perfil"
-              type="email"
-              value={profilePhotoCreate}
-              onChange={e=>setProfilePhoto(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              id="petCreate"
-              label="Nombre de mascota"
-              type="email"
-              value={petCreate}
-              onChange={e=>setPetCreate(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              id="streetCreate"
-              label="Nombre de su calle"
-              type="email"
-              value={streetCreate}
-              onChange={e=>setStreetCreate(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              id="movieCreate"
-              label="Película favorita"
-              type="email"
-              value={movieCreate}
-              onChange={e=>setMovieCreate(e.target.value)}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={saveUser} color="primary">
-              Guardar
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Cancelar
-            </Button>
-          </DialogActions>
-        </Dialog>              
+        <DialogCustom titleDialog={"Nuevo Usuario"} isEditionDialog={true}
+                      dialogContentText="Cargue los datos del Usuario"
+                      isOpen={open} closeFunction={handleClose} saveFunction={saveUser}
+                      componentContent={<>
+                        <TextField
+                          id="id-userNameCreate"
+                          label="Nombre de usuario"
+                          type="email"
+                          value={userNameCreate}
+                          onChange={e=>setUserNameCreate(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="passwordCreate"
+                          label="Contraseña"
+                          type="password"
+                          value={passwordCreate}
+                          onChange={e=>setPasswordCreate(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="emailCreate"
+                          label="Email"
+                          type="email"
+                          value={emailCreate}
+                          onChange={e=>setEmailCreate(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="bicyclePhotoCreate"
+                          label="Foto de bicicleta"
+                          type="email"
+                          value={bicyclePhotoCreate}
+                          onChange={e=>setBicyclePhoto(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="profilePhotoCreate"
+                          label="Foto de perfil"
+                          type="email"
+                          value={profilePhotoCreate}
+                          onChange={e=>setProfilePhoto(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="petCreate"
+                          label="Nombre de mascota"
+                          type="email"
+                          value={petCreate}
+                          onChange={e=>setPetCreate(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="streetCreate"
+                          label="Nombre de su calle"
+                          type="email"
+                          value={streetCreate}
+                          onChange={e=>setStreetCreate(e.target.value)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="movieCreate"
+                          label="Película favorita"
+                          type="email"
+                          value={movieCreate}
+                          onChange={e=>setMovieCreate(e.target.value)}
+                          fullWidth
+                        />
+                      </>}>
+        </DialogCustom>
       </GridContainer>
     </div>
   );

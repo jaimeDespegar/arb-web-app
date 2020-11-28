@@ -66,7 +66,7 @@ const dashboardRoutes = [
   },
   {
     path: "/PanelControlWebEstadias",
-    name: "PanelControl",
+    name: "Panel de Control",
     icon: DataUsageIcon,
     component: PanelControlWebEstadias,
     layout: "/admin"

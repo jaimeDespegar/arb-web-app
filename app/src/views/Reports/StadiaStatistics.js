@@ -25,15 +25,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const StadiaStatistics = ({ className, ...rest }) => {
+
   const classes = useStyles();
   const theme = useTheme();
-  //const EXITOSAS = 30
-  //const SOSPECHOSAS = 70
-  const token = axios.defaults.headers.common.Authorization//VER !!
   const [suspected, setSuspected] = useState({});
 
-  //hacer un GET de estadias, traer los datos desde la API ya resueltos 
-  // y desde lo web solo lo muestro
   const findEstadiasReportesAll = () => {
     axios
     .get("http://127.0.0.1:8000/api/estadia/reports/")
@@ -41,11 +37,6 @@ const StadiaStatistics = ({ className, ...rest }) => {
     .then((result) => {
       console.log(result)
       setSuspected(result)
-      //result.forEach((e) => {
-      //  suspectedCases.push('En el lugar ' + e.place +', dueño '+e.userName)
-      //  suspectedCasesItems.push(e)
-      //})
-      //suspectedCases.forEach((item, key) => { suspectedCasesIndex.push(key); });
     })
     .catch((error) => { console.log(error) })
   }
@@ -105,11 +96,7 @@ const StadiaStatistics = ({ className, ...rest }) => {
     }
   ];
 
-
-
-
-
-useEffect(() => { 
+  useEffect(() => { 
     findEstadiasReportesAll();
   }, []);
 

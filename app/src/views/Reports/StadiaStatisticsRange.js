@@ -22,10 +22,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const StadiaStatisticsRange = ({ className, ...rest }) => {
-  console.log("StadiaStatisticsRange")
+
   const classes = useStyles();
   const theme = useTheme();
-  const token = axios.defaults.headers.common.Authorization
   const [stadiaRange, setStadiaRange] = useState({});
   
   const findEstadiasReportesAll = () => {
@@ -110,7 +109,7 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
     }
   };
 
-useEffect(() => { 
+  useEffect(() => { 
     findEstadiasReportesAll();
   }, []);
   return (
