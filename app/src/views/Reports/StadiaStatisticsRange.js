@@ -17,6 +17,12 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import axios from 'axios';
 
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
 const useStyles = makeStyles(() => ({
   root: {}
 }));
@@ -27,9 +33,15 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
   const theme = useTheme();
   const [stadiaRange, setStadiaRange] = useState({});
   
+  const [days, setDays] = useState(7);
+  const handleChange = (event) => {
+    setDays(event.target.value);
+  };
+
+
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+7+"/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+days+"/")
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -111,22 +123,40 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
 
   useEffect(() => { 
     findEstadiasReportesAll();
-  }, []);
+  }, [days]);
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
+    <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Días</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={days}
+          onChange={handleChange}
+        >
+          <MenuItem value={1}>uno</MenuItem>
+          <MenuItem value={2}>dos</MenuItem>
+          <MenuItem value={3}>tres</MenuItem>
+          <MenuItem value={4}>cuatro</MenuItem>
+          <MenuItem value={5}>cinco</MenuItem>
+          <MenuItem value={6}>seis</MenuItem>
+          <MenuItem value={7}>siete</MenuItem>
+          <MenuItem value={8}>ocho</MenuItem>
+          <MenuItem value={9}>nueve</MenuItem>
+          <MenuItem value={10}>diez</MenuItem>
+          <MenuItem value={11}>once</MenuItem>
+          <MenuItem value={12}>doce</MenuItem>
+          <MenuItem value={13}>trece</MenuItem>
+          <MenuItem value={14}>catorce</MenuItem>
+        </Select>
+      </FormControl>
+
+
       <CardHeader
-        action={(
-          <Button
-            endIcon={<ArrowDropDownIcon />}
-            size="small"
-            variant="text"
-          >
-            Last 7 days
-          </Button>
-        )}
+        
         title="Estadísticas de estadías semanal"
       />
       <Divider />

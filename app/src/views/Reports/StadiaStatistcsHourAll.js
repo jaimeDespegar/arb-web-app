@@ -10,16 +10,25 @@ import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
 const useStyles = makeStyles(styles);
-
-
 export default function StadiaStatistcsHourAll() {
   
   const [stadiaHabitual, setStadiaHabitual] = useState({});
   const classes = useStyles();
-  const [days, setDays] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen(prevState => !prevState);
+
+  const [days, setDays] = useState(7);
+  const handleChange = (event) => {
+    setDays(event.target.value);
+  };
 
   let datalocalEntrance = {
     data: {
@@ -44,15 +53,9 @@ export default function StadiaStatistcsHourAll() {
     .catch((error) => { console.log(error) })
   }
 
-  const actionWeek = (days)=>{
-    console.log("semana " + days);
-    setDays(days)
-    findEstadiasReportesAll()
-  }
-
   useEffect(() => { 
     findEstadiasReportesAll();
-  }, []);
+  }, [days]);
   return (
     <div>
       
@@ -64,17 +67,20 @@ export default function StadiaStatistcsHourAll() {
             <CardBody>
               <GridContainer >
                 <GridItem xs={15} sm={15} md={12} >
-                    <Dropdown isOpen={dropdownOpen} toggle={toggle} >
-                      {/* <DropdownToggle caret>
-                        Elija una de las siguientes opciones:
-                      </DropdownToggle> */}
-                        <DropdownMenu>
-                          <DropdownItem onClick={()=>actionWeek(7)}>1 Semana</DropdownItem>
-                          <DropdownItem onClick={()=>actionWeek(14)}>2 Semana</DropdownItem>
-                          <DropdownItem onClick={()=>actionWeek(21)}>3 Semana</DropdownItem>
-                          <DropdownItem onClick={()=>actionWeek(28)}>4 Semana</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Semanas</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={days}
+                        onChange={handleChange}
+                      >
+                      <MenuItem value={7}>última semana</MenuItem>
+                      <MenuItem value={14}>últimas dos semanas</MenuItem>
+                      <MenuItem value={21}>últimas tres semanas</MenuItem>
+                      <MenuItem value={28}>últimas cuatro semanas</MenuItem>
+                    </Select>
+                  </FormControl>
                 </GridItem>
               </GridContainer>
             </CardBody>
