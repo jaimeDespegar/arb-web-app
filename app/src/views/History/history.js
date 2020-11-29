@@ -17,6 +17,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import axios from 'axios';
+import { headerAuthorization } from "./../../variables/token";
 import ExportExcel from 'react-export-excel';
 
 const ExcelFile = ExportExcel.ExcelFile;
@@ -61,10 +62,11 @@ export default function History() {
   const handleClose = () => {
     setOpen(false);
   };  
+  
   const [history, setHistory] = useState([]);
+
   const findItems = () => {
-    const token = axios.defaults.headers.common.Authorization
-    console.log('history token ', token)
+
     let filters = "?";
 
     if (fromDate) {
@@ -85,7 +87,7 @@ export default function History() {
 
     if (filters !== '?') {
       axios
-      .get("http://127.0.0.1:8000/api/estadia/find" + filters)
+      .get("http://127.0.0.1:8000/api/estadia/find" + filters, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
           setHistory(result)

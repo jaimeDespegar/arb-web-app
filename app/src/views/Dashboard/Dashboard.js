@@ -20,6 +20,7 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 import imgRobo from 'assets/images/Egress_4_12-11-2020_20:45:22.jpg'
 import Button from "components/CustomButtons/Button.js";
 import ExportExcel from 'react-export-excel';
+import { headerAuthorization } from "./../../variables/token";
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -69,37 +70,29 @@ export default function Dashboard() {
   };
 
   const findStaysFromToday = () => {
-    const token = axios.defaults.headers.common.Authorization
-
-    if (token) {
-      axios
-        .get("http://127.0.0.1:8000/api/estadias-getAll/")
-        .then(res => res.data)
-        .then((result) => {
-            result.forEach((e) => {
-              if (e.arrival.dateCreated) {
-                arrivals.push(e.userName + ' estaciono en el lugar ' + e.placeUsed)
-                arrivalsItems.push(e.arrival)
-              }
-              if (e.departure.dateCreated) {
-                departures.push(e.userName + ' se retiro del lugar ' + e.placeUsed)
-                departuresItems.push(e.departure)
-              }
-            })
-            arrivals.forEach((item, key) => { arrivalsIndex.push(key); });
-            departures.forEach((item, key) => { departuresIndex.push(key); });
-          },
-          (error) => { console.log(error) })
-          .catch((error) => { console.log(error) })  
-    } else {
-      console.log('Dashboard: no hay token')
-    }
-      
+    axios
+      .get("http://127.0.0.1:8000/api/estadias-getAll/", headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+          result.forEach((e) => {
+            if (e.arrival.dateCreated) {
+              arrivals.push(e.userName + ' estaciono en el lugar ' + e.placeUsed)
+              arrivalsItems.push(e.arrival)
+            }
+            if (e.departure.dateCreated) {
+              departures.push(e.userName + ' se retiro del lugar ' + e.placeUsed)
+              departuresItems.push(e.departure)
+            }
+          })
+          arrivals.forEach((item, key) => { arrivalsIndex.push(key); });
+          departures.forEach((item, key) => { departuresIndex.push(key); });
+        }, (error) => { console.log(error) })
+      .catch((error) => { console.log(error) }) 
   }
 
   const findSuspectedCases = () => {
     axios
-    .get("http://127.0.0.1:8000/api/notificationEgress-getAll/")
+    .get("http://127.0.0.1:8000/api/notificationEgress-getAll/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -117,7 +110,7 @@ export default function Dashboard() {
 
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourUserWeek/"+suspectedCaseSelected.userName+"/"+days+"/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsHourUserWeek/"+suspectedCaseSelected.userName+"/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       setStadiaHabitual(result)

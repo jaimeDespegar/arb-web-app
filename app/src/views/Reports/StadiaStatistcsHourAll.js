@@ -9,8 +9,6 @@ import CardBody from "components/Card/CardBody.js";
 import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import { Dropdown, DropdownItem, DropdownMenu } from 'reactstrap'
-
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -22,8 +20,6 @@ export default function StadiaStatistcsHourAll() {
   
   const [stadiaHabitual, setStadiaHabitual] = useState({});
   const classes = useStyles();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen(prevState => !prevState);
 
   const [days, setDays] = useState(7);
   const handleChange = (event) => {
@@ -51,12 +47,6 @@ export default function StadiaStatistcsHourAll() {
       setStadiaHabitual(result)
     })
     .catch((error) => { console.log(error) })
-  }
-
-  const actionWeek = (days)=>{
-    console.log("semana " + days);
-    setDays(days)
-    findEstadiasReportesAll()
   }
 
   useEffect(() => { 

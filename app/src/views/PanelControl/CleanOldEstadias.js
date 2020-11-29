@@ -7,7 +7,7 @@ import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
 import CardFooter from "components/Card/CardFooter";
 import axios from "axios";
-
+import { headerAuthorization } from "./../../variables/token";
 
 const styles = {
   cardTitleWhite: {
@@ -31,19 +31,15 @@ export default function CleanOldStadias() {
   const classes = useStyles();
   
   const limpiarEstadias = () => {
-    const token = axios.defaults.headers.common.Authorization
-
-    if (token) {
-      axios
-        .get("http://127.0.0.1:8000/api/estadia/cleanOldStadias/")
-        .then(response => {
-          alert('¡Limpieza satisfactoria!')
-      })
-      .catch((error) => { 
-        console.log('Error limpiarEstadias ', error) 
-        alert('Error al limpiar estadías anteriores')
-      })
-    }
+    axios
+      .get("http://127.0.0.1:8000/api/estadia/cleanOldStadias/", headerAuthorization())
+      .then(response => {
+        alert('¡Limpieza satisfactoria!')
+    })
+    .catch((error) => { 
+      console.log('Error limpiarEstadias ', error) 
+      alert('Error al limpiar estadías anteriores')
+    })
   }
 
   return (

@@ -15,6 +15,8 @@ import DialogCustom from 'components/Dialog/DialogCustom';
 import Table from "components/Table/Table.js";
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import { headerAuthorization } from "./../../variables/token";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -74,7 +76,7 @@ export default function UserProfile() {
   }
 
   const saveUser = () => {
-    const token = axios.defaults.headers.common.Authorization;
+
     const data = {
       username: userNameCreate,
       password: passwordCreate,
@@ -85,74 +87,55 @@ export default function UserProfile() {
       street : streetCreate,
       movie : movieCreate,
     }
-    console.log('user to post ', data)
-    const params = {
-      method: 'POST',
-      headers: {
-       'Content-type': 'application/json' // Indicates the content 
-      },
-      body: data // We send data in JSON format
-    }
 
     if (isEdit) {
       confirmUpdateUser(data);
     } else {
-      createUser(params, token);
+      createUser(data);
     }
     
   }
   
-  const createUser = (params, token) => {
-    if (token) {
-      axios
-        .post("http://127.0.0.1:8000/api/auth/register/", params)
-        .then(res => res.params)
-        .then((result) => {
-            cleanForm();
-            setOpen(false);
-            alert('¡Usuario agregado!')
-        })
-        .catch((error) => { 
-          if(error.response.status === 501){
+  const createUser = (params) => {
+    axios
+      .post("http://127.0.0.1:8000/api/auth/register/", params, headerAuthorization())
+      .then(res => res.params)
+      .then((result) => {
+          cleanForm();
+          findUsers();
+          setOpen(false);
+          alert('¡Usuario agregado!');
+      })
+      .catch((error) => { 
+        if(error.response.status === 501){
           console.log('El usuario ya existe!');
-          alert('¡El usuario ya existe!')
+          alert('¡El usuario ya existe!');
         }
         if(error.response.status === 503){
           console.log('El email ya existe!');
-          alert('¡El email ya existe!')
+          alert('¡El email ya existe!');
         }
-          console.log('Error, Usuario no creado', error) 
-        })  
-    } else {
-      console.log('BicycleParking: no hay token')
-    }
+        console.log('Error, Usuario no creado', error); 
+      })
   }
 
   const findUsers = () => {
-    const token = axios.defaults.headers.common.Authorization;
-
-    const filter = username ? '?user.username='+username : ''
-    
-    if (token) {
-      axios
-        .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter)
-        .then(res => res.data)
-        .then((result) => {
-          let values = result.map((item) => [item.username, 
-                                             item.email, 
-                                             "bikeOwner",
-                                             <Button color="warning" onClick={e => updateUser(item)}> Editar </Button>,
-                                             <Button color="danger" onClick={e => deleteUser(item)}> Borrar </Button>,
-                                            ])
+    const filter = username ? '?user.username='+username : '';    
+    axios
+      .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter, headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        let values = result.map((item) => [item.username, 
+                                            item.email, 
+                                            "bikeOwner",
+                                            <Button color="warning" onClick={e => updateUser(item)}> Editar </Button>,
+                                            <Button color="danger" onClick={e => deleteUser(item)}> Borrar </Button>,
+                                          ])
 
 
-          setUsers(values);
-          console.log("bikeOwner-getAll: ",result);
-        })
-        .catch((error) => { console.log('Error bike Owner getAll ', error) })  
-    } else {
-      console.log('User: no hay token')
-    }
+        setUsers(values);
+      })
+      .catch((error) => { console.log('Error bike Owner getAll ', error) })
   }
 
   const updateUser = (user) => {
@@ -167,43 +150,35 @@ export default function UserProfile() {
     setIsEdit(true);
     setOpen(true);
   }
+
   const confirmUpdateUser = (user) => {
-    const token = axios.defaults.headers.common.Authorization;
-  
-    if (token) {
-      axios
-        .put("http://127.0.0.1:8000/api/bikeOwner/update/"+user.username +'/', user)
-        .then(res => res.data)
-        .then((result) => {
-          alert('Usuario Actualizado');
-          cleanForm();
-          setIsEdit(false);
-          setOpen(false);
-        })
-        .catch((error) => { console.error('Error update usuario ', error) 
-      if(error.response.status === 503){
+    axios
+      .put("http://127.0.0.1:8000/api/bikeOwner/update/"+user.username +'/', user, headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        alert('Usuario Actualizado');
+        cleanForm();
+        findUsers();
+        setIsEdit(false);        
+        setOpen(false);
+      })
+      .catch((error) => { console.error('Error update usuario ', error) 
+        if(error.response.status === 503){
           console.log('El email ya existe!');
           alert('¡El email ya existe!')
         }
       })
-    } else {
-      console.log('Update usuario: no hay token')
-    }
   }
-  const deleteUser = (user) => {
-    const token = axios.defaults.headers.common.Authorization;
 
-    if (token) {
-      axios
-        .delete("http://127.0.0.1:8000/api/bikeOwner-delete/"+ user.username+"/",user)
-        .then(res => res.data)
-        .then((result) => {
-          alert('bikeOwner eliminado')
-        })
-        .catch((error) => { console.log('Error delete bikeOwner ', error) })  
-    } else {
-      console.log('Delete bikeOwner: no hay token')
-    }
+  const deleteUser = (user) => {
+    axios
+      .delete("http://127.0.0.1:8000/api/bikeOwner-delete/"+ user.username+"/", headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        alert('Usuario ' + user.username + ' eliminado');
+        findUsers();
+      })
+      .catch((error) => { console.log('Error delete bikeOwner ', error) })
   }
 
   useEffect(() => { findUsers() }, [])
