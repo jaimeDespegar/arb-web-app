@@ -17,6 +17,11 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import axios from 'axios';
 
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 const useStyles = makeStyles(() => ({
   root: {}
 }));
@@ -27,9 +32,15 @@ const StadiaStatisticsWeek = ({ className, ...rest }) => {
   const theme = useTheme();
   const [suspected, setSuspected] = useState({});
 
+  const [days, setDays] = useState(7);
+  const handleChange = (event) => {
+    setDays(event.target.value);
+  };
+
+
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsWeek/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsWeek/"+days+"/")
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -114,23 +125,30 @@ const StadiaStatisticsWeek = ({ className, ...rest }) => {
 
 useEffect(() => { 
     findEstadiasReportesAll();
-  }, []);
+  }, [days]);
   return (
+   
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
+    <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Días</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={days}
+          onChange={handleChange}
+        >
+          <MenuItem value={1}>último día</MenuItem>
+          <MenuItem value={7}>última semana</MenuItem>
+          <MenuItem value={30}>último mes</MenuItem>
+          <MenuItem value={360}>último año</MenuItem>
+        </Select>
+      </FormControl>
       <CardHeader
-        action={(
-          <Button
-            endIcon={<ArrowDropDownIcon />}
-            size="small"
-            variant="text"
-          >
-            Last 7 days
-          </Button>
-        )}
-        title="Estadísticas de estadías semanal"
+        
+        title="Estadísticas de estadías"
       />
       <Divider />
       <CardContent>
@@ -159,7 +177,12 @@ useEffect(() => {
           Overview
         </Button>
       </Box>
+
     </Card>
+   
+                    
+                
+   
   );
 };
 
