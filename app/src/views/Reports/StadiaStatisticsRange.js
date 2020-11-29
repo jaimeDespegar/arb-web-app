@@ -13,10 +13,9 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import axios from 'axios';
-
+import { headerAuthorization } from "./../../variables/token";
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -38,10 +37,9 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
     setDays(event.target.value);
   };
 
-
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+days+"/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -124,6 +122,7 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
   useEffect(() => { 
     findEstadiasReportesAll();
   }, [days]);
+
   return (
     <Card
       className={clsx(classes.root, className)}

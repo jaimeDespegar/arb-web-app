@@ -9,9 +9,7 @@ import CardBody from "components/Card/CardBody.js";
 import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import {Dropdown, DropdownItem, DropdownMenu } from 'reactstrap'
-
-
+import { headerAuthorization } from "./../../variables/token";
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -34,6 +32,7 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
       series: stadiaHabitual.listHoursParkingFinal//Poner horarios picos por dia
     }
   };
+  
   let datalocalEgress = {
     data: {
       labels: stadiaHabitual.listDaysWeek,
@@ -42,7 +41,7 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
   };
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -52,15 +51,6 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
   }
   
   const classes = useStyles();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggle = () => setDropdownOpen(prevState => !prevState);
-  
-  const actionWeek = (days)=>{
-    console.log("semana " + days);
-    setDays(days)
-    findEstadiasReportesAll()
-  }
 
   useEffect(() => { 
     findEstadiasReportesAll();

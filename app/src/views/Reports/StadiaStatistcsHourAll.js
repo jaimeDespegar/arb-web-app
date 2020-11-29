@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { headerAuthorization } from "./../../variables/token";
 
 
 const useStyles = makeStyles(styles);
@@ -38,9 +39,10 @@ export default function StadiaStatistcsHourAll() {
       series: stadiaHabitual.listEgress
     }
   };
+
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllWeek/"+days+"/")
+    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllWeek/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -52,6 +54,7 @@ export default function StadiaStatistcsHourAll() {
   useEffect(() => { 
     findEstadiasReportesAll();
   }, [days]);
+
   return (
     <div>
       
