@@ -221,13 +221,13 @@ export default function History() {
               tableHead={["Usuario", "Bicicletero", "Lugar", "Fecha creada", "Sospechosa", "Fotos"]}
               tableData={data}
             />
-            <ExcelFile element={<button>Exportar a excel</button>} filename="Historial">
+            {/* <ExcelFile element={<Button>Exportar a excel</Button>} filename="Historial">
                     <ExcelSheet data={history} name="Historial">
                       <ExcelColumn label="lugar" value="placeUsed"/>
                       <ExcelColumn label="fecha" value="dateCreated"/>
                       <ExcelColumn label="usuario" value="userName"/>
                     </ExcelSheet>  
-                  </ExcelFile>
+                  </ExcelFile> */}
           </CardBody>
         </Card>
       </GridItem>

@@ -113,7 +113,7 @@ export default function Dashboard() {
   }
 
   const [stadiaHabitual, setStadiaHabitual] = useState([]);
-  const [days, setDays] = useState(14);
+  const [days] = useState(14);
 
   const findEstadiasReportesAll = () => {
     axios

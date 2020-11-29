@@ -14,11 +14,11 @@ import DialogCustom from 'components/Dialog/DialogCustom';
 import { format } from 'date-fns'
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-
+import { headerAuthorization } from "./../../variables/token";
 
 const useStyles = makeStyles(styles);
 
-export default function History() {
+export default function AuthorizationStays() {
 
   const classes = useStyles();
   const [pendingStays, setPendingStays] = useState([]);
@@ -45,15 +45,16 @@ export default function History() {
     const message = value ? 'aceptada' : 'denegada'
 
     axios
-    .post("http://127.0.0.1:8000/api/estadia/authorize", data)
-    .then(res => res.data)
-    .then((result) => {
-      alert('La estadia fue ' + message + ' con exito para el usuario ' + item.userName)
-    })
-    .catch((error) => { 
-      console.error(error);
-      alert('Se produjo un error inesperado al accionar sobre la estadia seleccionada')
-    })
+      .post("http://127.0.0.1:8000/api/estadia/authorize", data, headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        alert('La estadia fue ' + message + ' con exito para el usuario ' + item.userName);
+        findItems();
+      })
+      .catch((error) => { 
+        console.error(error);
+        alert('Se produjo un error inesperado al accionar sobre la estadia seleccionada')
+      })
   }
 
   const photoBtn = () => {
@@ -62,8 +63,8 @@ export default function History() {
 
   const actionsBtn = (item) => {
     return (<>
-              <Button color="success" disabled={item.isAuthorize===true} onClick={() => authorize(item, true)}>Autorizar</Button>
-              <Button color="danger" disabled={item.isAuthorize===false} onClick={() => authorize(item, false)}>Denegar</Button>
+              <Button color="success" disabled={item.isActive===false} onClick={() => authorize(item, true)}>Autorizar</Button>
+              <Button color="danger" disabled={item.isActive===false} onClick={() => authorize(item, false)}>Denegar</Button>
             </>)
   }
 
@@ -73,10 +74,10 @@ export default function History() {
       return (isAuthorize === undefined || isAuthorize === null) ? 'Sin resolver' : (isAuthorize===true ? 'Aceptado': 'Denegado')
     }
 
-    const filter = "?isActive=True" + (userName ? '&userName='+userName : '')
+    const filter = (userName ? '?userName='+userName : '')
 
     axios
-    .get("http://127.0.0.1:8000/api/estadia/pendings"+filter)
+    .get("http://127.0.0.1:8000/api/estadia/pendings"+filter, headerAuthorization())
     .then(res => res.data)
     .then((pendings) => {
       const values = [];

@@ -9,7 +9,7 @@ import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import axios from "axios";
-
+import { getItem, saveItem, removeItem, headerAuthorization } from "./../../variables/token";
 
 const styles = {
   cardTitleWhite: {
@@ -33,7 +33,7 @@ export default function Login() {
   const classes = useStyles();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [showLogin, setShowLogin] = useState(!axios.defaults.headers.common.Authorization)
+  const [showLogin, setShowLogin] = useState(!getItem('token'))
 
   const login = () => {
 
@@ -43,7 +43,7 @@ export default function Login() {
       .post("http://127.0.0.1:8000/api/auth/login/", data)
       .then(response => {
         const { token } = response.data;
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        saveItem('token', token);
         alert('Hola ' + userName+'. Ya puede navegar en ARB');
         setUserName('');
         setPassword('');
@@ -57,12 +57,12 @@ export default function Login() {
 
   const logout = () => {
 
-    if (axios.defaults.headers.common.Authorization) {
+    if (getItem('token')) {
       axios
-      .get("http://127.0.0.1:8000/api/auth/logout/")
+      .get("http://127.0.0.1:8000/api/auth/logout/", headerAuthorization())
       .then(response => {
-        axios.defaults.headers.common.Authorization = null;
-        alert('!Adios! Gracias por usar ARB');
+        removeItem('token');
+        alert('¡Adios! Gracias por usar ARB');
         setShowLogin(true);
       })
       .catch((error) => { 

@@ -16,6 +16,7 @@ import CardFooter from "components/Card/CardFooter";
 import TextField from '@material-ui/core/TextField';
 import DialogCustom from 'components/Dialog/DialogCustom';
 import axios from 'axios';
+import { headerAuthorization } from "./../../variables/token";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,6 @@ export default function BicycleParkings() {
   const [countPlaces, setCountPlaces] = React.useState(1);
   const [isEdit, setIsEdit] = React.useState(false);
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -63,7 +63,6 @@ export default function BicycleParkings() {
   }
 
   const saveBicycleParking = () => {
-    const token = axios.defaults.headers.common.Authorization;
     const data = {
       number: numberBicycleParking,
       description: descriptionParking,
@@ -74,42 +73,33 @@ export default function BicycleParkings() {
     if (isEdit) {
       confirmUpdateBicycleParking(data);
     } else {
-      createBicycleParking(data, token);
+      createBicycleParking(data);
     }
   }
 
-  const createBicycleParking = (data, token) => {
-    if (token) {
-      axios
-        .post("http://127.0.0.1:8000/api/bicycleParking-create/", data)
-        .then(res => res.data)
-        .then((result) => {
-            cleanForm();
-            setOpen(false);
-            alert('¡Bicicletero agregado!')
-        })
-        .catch((error) => { 
-          console.log('Error bicycly parkings ', error) 
-        })  
-    } else {
-      console.log('BicycleParking: no hay token')
-    }
+  const createBicycleParking = (data) => {
+    axios
+      .post("http://127.0.0.1:8000/api/bicycleParking-create/", data, headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        findBicycleParkings();
+        cleanForm();
+        setOpen(false);
+        alert('¡Bicicletero agregado!')
+      })
+      .catch((error) => { 
+        console.log('Error bicycly parkings ', error) 
+      })  
   }
 
   const findBicycleParkings = () => {
-    const token = axios.defaults.headers.common.Authorization;
-    
-    if (token) {
-      axios
-        .get("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/")
-        .then(res => res.data)
-        .then((result) => {
-            setParkings(result);
-        })
-        .catch((error) => { console.log('Error bicycle parkings ', error) })  
-    } else {
-      console.log('BicycleParking: no hay token')
-    }
+    axios
+      .get("http://127.0.0.1:8000/api/bicycleParkingAndPlaces/", headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+          setParkings(result);
+      })
+      .catch((error) => { console.log('Error bicycle parkings ', error) })  
   }
   
   const updateBicycleParking = (parking) => {
@@ -121,38 +111,28 @@ export default function BicycleParkings() {
   }
 
   const confirmUpdateBicycleParking = (parking) => {
-    const token = axios.defaults.headers.common.Authorization;
- 
-    if (token) {
-      axios
-        .put("http://127.0.0.1:8000/api/bicycleParking-update/", parking)
-        .then(res => res.data)
-        .then((result) => {
-          alert('Bicicletero Actualizado');
-          cleanForm();
-          setIsEdit(false);
-          setOpen(false);
-        })
-        .catch((error) => { console.error('Error update bicycle parking ', error) })
-    } else {
-      console.log('Update BicycleParking: no hay token')
-    }
+    axios
+      .put("http://127.0.0.1:8000/api/bicycleParking-update/", parking, headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        alert('Bicicletero Actualizado');
+        findBicycleParkings();
+        cleanForm();
+        setIsEdit(false);
+        setOpen(false);
+      })
+      .catch((error) => { console.error('Error update bicycle parking ', error) })
   }
 
   const deleteBicycleParking = (parking) => {
-    const token = axios.defaults.headers.common.Authorization;
-
-    if (token) {
-      axios
-        .delete("http://127.0.0.1:8000/api/bicycleParking-delete/"+ parking.number+"/")
-        .then(res => res.data)
-        .then((result) => {
-          alert('Bicicletero eliminado')
-        })
-        .catch((error) => { console.log('Error delete bicycle parking ', error) })  
-    } else {
-      console.log('Delete BicycleParking: no hay token')
-    }
+    axios
+      .delete("http://127.0.0.1:8000/api/bicycleParking-delete/"+ parking.number+"/", headerAuthorization())
+      .then(res => res.data)
+      .then((result) => {
+        alert('Bicicletero eliminado');
+        findBicycleParkings();
+      })
+      .catch((error) => { console.log('Error delete bicycle parking ', error) })  
   }
 
   useEffect(() => { findBicycleParkings() }, [])

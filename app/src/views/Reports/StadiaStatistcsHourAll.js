@@ -9,7 +9,7 @@ import CardBody from "components/Card/CardBody.js";
 import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import { Dropdown, DropdownItem, DropdownMenu } from 'reactstrap'
 const useStyles = makeStyles(styles);
 
 
@@ -65,10 +65,7 @@ export default function StadiaStatistcsHourAll() {
               <GridContainer >
                 <GridItem xs={15} sm={15} md={12} >
                     <Dropdown isOpen={dropdownOpen} toggle={toggle} >
-                      {/* <DropdownToggle caret>
-                        Elija una de las siguientes opciones:
-                      </DropdownToggle> */}
-                        <DropdownMenu>
+                      <DropdownMenu>
                           <DropdownItem onClick={()=>actionWeek(7)}>1 Semana</DropdownItem>
                           <DropdownItem onClick={()=>actionWeek(14)}>2 Semana</DropdownItem>
                           <DropdownItem onClick={()=>actionWeek(21)}>3 Semana</DropdownItem>
