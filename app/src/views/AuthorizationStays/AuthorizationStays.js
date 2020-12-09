@@ -24,9 +24,11 @@ export default function AuthorizationStays() {
   const [pendingStays, setPendingStays] = useState([]);
   const [userName, setUserName] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [itemSelected, setItemSelected] = useState({});
 
-  const openModalPhotos = () => {
+  const openModalPhotos = (item) => {
     setOpen(true);
+    setItemSelected(item);
   };
 
   const handleClose = () => {
@@ -57,8 +59,8 @@ export default function AuthorizationStays() {
       })
   }
 
-  const photoBtn = () => {
-    return <Button color="info" onClick={() => openModalPhotos()}>Verificar</Button>
+  const photoBtn = (item) => {
+    return <Button color="info" onClick={() => openModalPhotos(item)}>Verificar</Button>
   }
 
   const actionsBtn = (item) => {
@@ -85,7 +87,7 @@ export default function AuthorizationStays() {
         let value = [item.userName, item.bicycleParking.description, item.place, 
                      format(new Date(item.dateCreated), 'HH:mm:ss dd/MM/yyyy  '),
                      buildState(item.isAuthorize),
-                     photoBtn(), actionsBtn(item)]
+                     photoBtn(item), actionsBtn(item)]  
         values.push(value);
       })
       setPendingStays(values);
@@ -154,7 +156,7 @@ export default function AuthorizationStays() {
                               <CardHeader color="success">
                                 <img
                                   style={{ height: "200px", width: "100%", display: "block" }}
-                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  src={itemSelected && itemSelected.photos ? itemSelected.photos.entrance : ''}
                                   alt='...'
                                 />
                               </CardHeader>
@@ -170,7 +172,7 @@ export default function AuthorizationStays() {
                               <CardHeader color="warning">
                                 <img
                                   style={{ height: "200px", width: "100%", display: "block" }}
-                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  src={require('assets/images/cover.jpeg')}
                                   alt='...'
                                 />
                               </CardHeader>

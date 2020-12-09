@@ -17,7 +17,6 @@ import DialogCustom from 'components/Dialog/DialogCustom';
 import { format } from 'date-fns';
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import imgRobo from 'assets/images/Egress_4_12-11-2020_20:45:22.jpg'
 import Button from "components/CustomButtons/Button.js";
 import ExportExcel from 'react-export-excel';
 import { headerAuthorization } from "./../../variables/token";
@@ -95,7 +94,6 @@ export default function Dashboard() {
     .get("http://127.0.0.1:8000/api/notificationEgress-getAll/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
-      console.log(result)
       result.forEach((e) => {
         suspectedCases.push('En el lugar ' + e.place +', dueño '+e.userName)
         suspectedCasesItems.push(e)
@@ -123,7 +121,6 @@ export default function Dashboard() {
                                          item.viernes,
                                          item.sabado])
       setData(values);
-      console.log("data ", data);
     })
     .catch((error) => { console.log(error) })
   }
@@ -157,8 +154,8 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="success">
-            <img style={{ height: "180px", width: "100%", display: "block" }}
-                 src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+              <img style={{ height: "180px", width: "100%", display: "block" }}
+                 src={arrivalSelected ? arrivalSelected.imageBase64 : ''}
                  alt="..." />
             </CardHeader>
             <CardBody>
@@ -179,7 +176,7 @@ export default function Dashboard() {
             <CardHeader color="warning">
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+              src={departureSelected ? departureSelected.imageBase64 : ''}
               alt='...'
             />
             </CardHeader>
@@ -199,7 +196,7 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <img
                 style={{ height: "180px", width: "100%", display: "block" }}
-                src={imgRobo}
+                src={suspectedCaseSelected ? suspectedCaseSelected.photoInBase64 : ''}
               />
             </CardHeader>
             <CardBody>

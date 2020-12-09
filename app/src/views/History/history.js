@@ -54,9 +54,11 @@ export default function History() {
   const [anonymous, setAnonymous] = useState(false);
   const [suspected, setSuspected] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [itemSelected, setItemSelected] = useState({});
 
-  const openModalPhotos = () => {
+  const openModalPhotos = (item) => {
     setOpen(true);
+    setItemSelected(item);
   };
 
   const handleClose = () => {
@@ -96,7 +98,7 @@ export default function History() {
                                              item.placeUsed.toString(), 
                                              format(new Date(item.dateCreated), 'dd/MM/yyyy HH:mm:ss'), 
                                              'SI/NO',
-                                             <Button color="primary" onClick={() => openModalPhotos()}> Ver </Button>
+                                             <Button color="primary" onClick={() => openModalPhotos(item)}> Ver </Button>
                                             ])
           setData(values);
         }
@@ -244,7 +246,7 @@ export default function History() {
                               <CardHeader color="success">
                                 <img
                                   style={{ height: "200px", width: "100%", display: "block" }}
-                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  src={itemSelected.arrival?itemSelected.arrival.imageBase64:''}
                                   alt='...'
                                 />
                               </CardHeader>
@@ -260,7 +262,7 @@ export default function History() {
                               <CardHeader color="warning">
                                 <img
                                   style={{ height: "200px", width: "100%", display: "block" }}
-                                  src={require('assets/images/Egress_4_12-11-2020_20:45:22.jpg')}
+                                  src={itemSelected.departure?itemSelected.departure.imageBase64:''}
                                   alt='...'
                                 />
                               </CardHeader>
