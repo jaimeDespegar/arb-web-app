@@ -10,6 +10,8 @@ import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import axios from "axios";
 import { getItem, saveItem, removeItem, headerAuthorization } from "./../../variables/token";
+import HomeIcon from '@material-ui/icons/Home';
+import Icon from '@material-ui/core/Icon';
 
 const styles = {
   cardTitleWhite: {
@@ -106,7 +108,9 @@ export default function Login() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" onClick={() => login()}>Ingresar</Button>
+              <Button color="primary" onClick={() => login()}>Ingresar.
+<Icon className="fa fa-key"/></Button>
+
             </CardFooter>
           </Card>
         </GridItem>
@@ -121,7 +125,8 @@ export default function Login() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" onClick={() => logout()}>Salir</Button>
+              <Button color="primary" onClick={() => logout()}>Salir.
+<Icon className="fa fa-sign-out"/></Button>
             </CardFooter>
           </Card>
         </GridItem>

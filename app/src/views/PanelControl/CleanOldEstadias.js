@@ -11,6 +11,8 @@ import CardFooter from "components/Card/CardFooter";
 import TextField from '@material-ui/core/TextField';
 import axios from "axios";
 import { headerAuthorization } from "./../../variables/token";
+import Icon from '@material-ui/core/Icon';
+
 
 const styles = {
   cardTitleWhite: {
@@ -85,7 +87,7 @@ export default function CleanOldStadias() {
               <h4 className={classes.cardTitleWhite}>Configuraciones</h4>
             </CardHeader>
             <CardBody>
-              <Button color="primary" onClick={() => limpiarEstadias()}>Limpiar Estadías previas</Button>
+              <Button color="primary" onClick={() => limpiarEstadias()}>Limpiar Estadías previas. <Icon className="fa fa-trash" style={{ fontSize: 15 }}/> </Button>
             </CardBody>
             <CardFooter>
               {/* <Button color="primary" onClick={() => limpiarEstadias()}>Limpiar estadías previas</Button> */}
@@ -104,7 +106,7 @@ export default function CleanOldStadias() {
               />
             </CardBody>
             <CardFooter>
-              <Button color="primary" onClick={() => updateConfiguration()}>Guardar cambios</Button>
+              <Button color="primary" onClick={() => updateConfiguration()}>Guardar cambios. <Icon className="fa fa-save" style={{ fontSize: 15 }}/> </Button>
             </CardFooter>
           </Card>
         </GridItem>
