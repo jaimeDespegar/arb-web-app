@@ -160,9 +160,6 @@ export default function BicycleParkings() {
                   <Button color="info">Buscar</Button>
                   <Button color="success" onClick={handleClickOpen}>Nuevo</Button>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={2} style={{marginTop: 25}}>
-                  <Button color="info">Ver Mapa</Button>
-                </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
