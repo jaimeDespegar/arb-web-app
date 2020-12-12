@@ -19,6 +19,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import axios from 'axios';
 import { headerAuthorization } from "./../../variables/token";
 import ExportExcel from 'react-export-excel';
+import Icon from '@material-ui/core/Icon';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -209,7 +210,7 @@ export default function History() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="info" onClick={() => findItems()}>Buscar</Button>
+              <Button color="info" onClick={() => findItems()}>Buscar<Icon className="fa fa-search" style={{ fontSize: 15 }}/></Button>
             </CardFooter>
           </Card>
       </GridItem>

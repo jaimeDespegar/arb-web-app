@@ -16,7 +16,7 @@ import Table from "components/Table/Table.js";
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { headerAuthorization } from "./../../variables/token";
-
+import Icon from '@material-ui/core/Icon';
 
 const styles = {
   cardCategoryWhite: {
@@ -128,8 +128,8 @@ export default function UserProfile() {
         let values = result.map((item) => [item.username, 
                                             item.email, 
                                             "bikeOwner",
-                                            <Button color="warning" onClick={e => updateUser(item)}> Editar </Button>,
-                                            <Button color="danger" onClick={e => deleteUser(item)}> Borrar </Button>,
+                                            <Button color="warning" onClick={e => updateUser(item)}> Editar. <Icon className="fa fa-edit" style={{ fontSize: 15 }}/> </Button>,
+                                            <Button color="danger" onClick={e => deleteUser(item)}> Borrar. <Icon className="fa fa-trash" style={{ fontSize: 15 }}/> </Button>,
                                           ])
 
 
@@ -205,8 +205,8 @@ export default function UserProfile() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6} style={{marginTop: 25}}>
-                  <Button color="info" onClick={() => findUsers()}>Buscar</Button>
-                  <Button color="success" onClick={handleClickOpen}>Nuevo</Button>
+                  <Button color="info" onClick={() => findUsers()}>Buscar. <Icon className="fa fa-search" style={{ fontSize: 15 }}/></Button>
+                  <Button color="success" onClick={handleClickOpen}>Nuevo. <Icon className="fa fa-user" style={{ fontSize: 15 }}/></Button>
                 </GridItem>
               </GridContainer>
             </CardBody>

@@ -15,6 +15,7 @@ import { format } from 'date-fns'
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import { headerAuthorization } from "./../../variables/token";
+import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(styles);
 
@@ -126,7 +127,7 @@ export default function AuthorizationStays() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="info" onClick={() => findItems()}>Buscar</Button>
+              <Button color="info" onClick={() => findItems()}>Buscar' '<Icon className="fa fa-search" style={{ fontSize: 30 }}/></Button>
             </CardFooter>
           </Card>
       </GridItem>

@@ -17,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import DialogCustom from 'components/Dialog/DialogCustom';
 import axios from 'axios';
 import { headerAuthorization } from "./../../variables/token";
+import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,8 +158,8 @@ export default function BicycleParkings() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6} style={{marginTop: 25}}>
-                  <Button color="info">Buscar</Button>
-                  <Button color="success" onClick={handleClickOpen}>Nuevo</Button>
+                  <Button color="info">Buscar.<Icon className="fa fa-search" style={{ fontSize: 15 }}/></Button>
+                  <Button color="success" onClick={handleClickOpen}>Nuevo.<div><DirectionsBike fontSize='large'/></div> </Button>
                 </GridItem>
               </GridContainer>
             </CardBody>
@@ -202,8 +203,8 @@ export default function BicycleParkings() {
                       <FormLabel>{parking.description}</FormLabel>
                     </Grid>  
                   <Grid item xs={12} sm={12} md={6} style={{marginTop:0, display:'flex', justifyContent:'flex-end'}}>
-                      <Button color="warning" onClick={e => updateBicycleParking(parking)}> Editar </Button>
-                      <Button color="danger" onClick={e => deleteBicycleParking(parking)}> Borrar </Button>
+                      <Button color="warning" onClick={e => updateBicycleParking(parking)}> Editar. <Icon className="fa fa-edit" style={{ fontSize: 15 }}/></Button>
+                      <Button color="danger" onClick={e => deleteBicycleParking(parking)}> Borrar. <Icon className="fa fa-trash" style={{ fontSize: 15 }}/></Button>
                   </Grid>
                   </Grid>
              </Paper>
