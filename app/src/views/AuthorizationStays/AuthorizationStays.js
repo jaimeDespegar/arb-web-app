@@ -16,6 +16,7 @@ import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import { headerAuthorization } from "./../../variables/token";
 import Icon from '@material-ui/core/Icon';
+import { APP_URL } from './../../variables/utils.js';
 
 const useStyles = makeStyles(styles);
 
@@ -48,7 +49,7 @@ export default function AuthorizationStays() {
     const message = value ? 'aceptada' : 'denegada'
 
     axios
-      .post("http://127.0.0.1:8000/api/estadia/authorize", data, headerAuthorization())
+      .post(APP_URL + "estadia/authorize", data, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
         alert('La estadia fue ' + message + ' con exito para el usuario ' + item.userName);
@@ -80,7 +81,7 @@ export default function AuthorizationStays() {
     const filter = (userName ? '?userName='+userName : '')
 
     axios
-    .get("http://127.0.0.1:8000/api/estadia/pendings"+filter, headerAuthorization())
+    .get(APP_URL + "estadia/pendings"+filter, headerAuthorization())
     .then(res => res.data)
     .then((pendings) => {
       const values = [];

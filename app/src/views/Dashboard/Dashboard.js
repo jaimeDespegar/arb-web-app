@@ -20,6 +20,7 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 import Button from "components/CustomButtons/Button.js";
 import ExportExcel from 'react-export-excel';
 import { headerAuthorization } from "./../../variables/token";
+import { APP_URL } from './../../variables/utils.js';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -70,7 +71,7 @@ export default function Dashboard() {
 
   const findStaysFromToday = () => {
     axios
-      .get("http://127.0.0.1:8000/api/estadias-getAll/", headerAuthorization())
+      .get(APP_URL + "estadias-getAll/", headerAuthorization())
       .then(res => res.data)
       .then((result) => {
           result.forEach((e) => {
@@ -91,7 +92,7 @@ export default function Dashboard() {
 
   const findSuspectedCases = () => {
     axios
-    .get("http://127.0.0.1:8000/api/notificationEgress-getAll/", headerAuthorization())
+    .get(APP_URL + "notificationEgress-getAll/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       result.forEach((e) => {
@@ -108,7 +109,7 @@ export default function Dashboard() {
 
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourUserWeek/"+suspectedCaseSelected.userName+"/"+days+"/", headerAuthorization())
+    .get(APP_URL + "estadia/reportsHourUserWeek/"+suspectedCaseSelected.userName+"/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       setStadiaHabitual(result)

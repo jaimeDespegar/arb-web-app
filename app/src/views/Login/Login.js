@@ -12,6 +12,8 @@ import axios from "axios";
 import { getItem, saveItem, removeItem, headerAuthorization } from "./../../variables/token";
 import HomeIcon from '@material-ui/icons/Home';
 import Icon from '@material-ui/core/Icon';
+import { APP_URL } from './../../variables/utils.js';
+
 
 const styles = {
   cardTitleWhite: {
@@ -42,7 +44,7 @@ export default function Login() {
     const data = { 'username': userName, 'password': password }
 
     axios
-      .post("http://127.0.0.1:8000/api/auth/login/", data)
+      .post(APP_URL + "auth/login/", data)
       .then(response => {
         const { token } = response.data;
         saveItem('token', token);
@@ -61,7 +63,7 @@ export default function Login() {
 
     if (getItem('token')) {
       axios
-      .get("http://127.0.0.1:8000/api/auth/logout/", headerAuthorization())
+      .get(APP_URL + "auth/logout/", headerAuthorization())
       .then(response => {
         removeItem('token');
         alert('¡Adios! Gracias por usar ARB');

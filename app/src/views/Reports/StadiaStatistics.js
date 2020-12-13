@@ -17,6 +17,8 @@ import { headerAuthorization } from "./../../variables/token";
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import axios from 'axios';
+import { APP_URL } from './../../variables/utils.js';
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,7 +34,7 @@ const StadiaStatistics = ({ className, ...rest }) => {
 
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reports/", headerAuthorization())
+    .get(APP_URL + "estadia/reports/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)

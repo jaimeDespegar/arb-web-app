@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import axios from "axios";
 import { headerAuthorization } from "./../../variables/token";
 import Icon from '@material-ui/core/Icon';
-
+import { APP_URL } from './../../variables/utils.js';
 
 const styles = {
   cardTitleWhite: {
@@ -38,7 +38,7 @@ export default function CleanOldStadias() {
 
   const limpiarEstadias = () => {
     axios
-      .get("http://127.0.0.1:8000/api/estadia/cleanOldStadias/", headerAuthorization())
+      .get(APP_URL + "estadia/cleanOldStadias/", headerAuthorization())
       .then(response => {
         alert('¡Limpieza satisfactoria!')
     })
@@ -50,7 +50,7 @@ export default function CleanOldStadias() {
   
   const loadConfiguration = () => {
     axios
-      .get("http://127.0.0.1:8000/api/configuration/secondsPending/", headerAuthorization())
+      .get(APP_URL + "configuration/secondsPending/", headerAuthorization())
       .then(response => {
         if (response.data && response.data.configurationValue) {
           setSeconds(response.data.configurationValue);
@@ -66,7 +66,7 @@ export default function CleanOldStadias() {
       value: seconds
     }
     axios
-      .put("http://127.0.0.1:8000/api/configuration/update/secondsPending/", data, headerAuthorization())
+      .put(APP_URL + "configuration/update/secondsPending/", data, headerAuthorization())
       .then(response => {
         alert('¡Valor actualizado!');
       })

@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import { APP_URL } from './../../variables/utils.js';
 
 const useStyles = makeStyles(styles);
 export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
@@ -41,7 +41,7 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
   };
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/", headerAuthorization())
+    .get(APP_URL + "estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)

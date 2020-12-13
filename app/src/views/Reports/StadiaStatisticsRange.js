@@ -20,6 +20,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { APP_URL } from './../../variables/utils.js';
 
 
 const useStyles = makeStyles(() => ({
@@ -39,7 +40,7 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
 
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsRange/"+days+"/", headerAuthorization())
+    .get(APP_URL + "estadia/reportsRange/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)

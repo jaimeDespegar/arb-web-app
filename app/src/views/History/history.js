@@ -20,6 +20,7 @@ import axios from 'axios';
 import { headerAuthorization } from "./../../variables/token";
 import ExportExcel from 'react-export-excel';
 import Icon from '@material-ui/core/Icon';
+import { APP_URL } from './../../variables/utils.js';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -90,7 +91,7 @@ export default function History() {
 
     if (filters !== '?') {
       axios
-      .get("http://127.0.0.1:8000/api/estadia/find" + filters, headerAuthorization())
+      .get(APP_URL + "estadia/find" + filters, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
           setHistory(result)
