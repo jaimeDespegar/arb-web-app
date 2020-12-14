@@ -1,12 +1,10 @@
 import React, { useEffect , useState} from "react";
-import ChartistGraph from "react-chartist";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import FormControl from '@material-ui/core/FormControl';
@@ -15,6 +13,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { headerAuthorization } from "./../../variables/token";
 import { APP_URL } from './../../variables/utils.js';
+import { Chart } from "react-google-charts";
+
 
 const useStyles = makeStyles(styles);
 export default function StadiaStatistcsHourAll() {
@@ -25,19 +25,6 @@ export default function StadiaStatistcsHourAll() {
   const [days, setDays] = useState(7);
   const handleChange = (event) => {
     setDays(event.target.value);
-  };
-
-  let datalocalEntrance = {
-    data: {
-      labels: stadiaHabitual.listDaysWeek,
-      series: stadiaHabitual.listEntrance
-    }
-  };
-  let datalocalEgress = {
-    data: {
-      labels: stadiaHabitual.listDaysWeek,
-      series: stadiaHabitual.listEgress
-    }
   };
 
   const findEstadiasReportesAll = () => {
@@ -87,16 +74,50 @@ export default function StadiaStatistcsHourAll() {
       </GridItem>
 
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card chart>
             <CardHeader color="info">
-              <ChartistGraph
-                className="ct-chart"
-                data={datalocalEntrance.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
+              {stadiaHabitual && stadiaHabitual.entrances && stadiaHabitual.entrances.length && (
+                <Chart
+                width={'600px'}
+                height={'400px'}
+                chartType="LineChart"
+                loader={<div>Loading Chart</div>}
+                data={stadiaHabitual.entrances}
+                options={{
+                  hAxis: {
+                    title: 'Día de la semana',
+                  },
+                  vAxis: {
+                    title: 'Horario',
+                  },
+                }}
+                rootProps={{ 'data-testid': '1' }}
+                chartPackages={['corechart', 'controls']}
+                render={({ renderControl, renderChart }) => {
+                    return (
+                      <div style={{ display: 'flex' }}>
+                        <div style={{ width: '40%' , marginRight: '100px'}}>{renderControl(() => true)}</div>
+                        <div style={{ width: '60%' }}>{renderChart()}</div>
+                      </div>
+                    )
+                  }}
+                controls={[
+                  {
+                    controlType: 'NumberRangeFilter',
+                    controlID: 'entrances-filter',
+                    options: {
+                      filterColumnIndex: 1,
+                      ui: {
+                        labelStacking: 'vertical',
+                        label: 'Rango de horarios:',
+                        allowTyping: false,
+                        allowMultiple: false,
+                      },
+                    },
+                  }
+                ]}
+              />)}
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Ingresos habituales</h4>
@@ -104,16 +125,51 @@ export default function StadiaStatistcsHourAll() {
           </Card>
         </GridItem>
         
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card chart>
             <CardHeader color="primary">
-              <ChartistGraph
-                className="ct-chart"
-                data={datalocalEgress.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
+              {stadiaHabitual && stadiaHabitual.egress && stadiaHabitual.egress.length && (
+                <Chart
+                width={'600px'}
+                height={'400px'}
+                chartType="LineChart"
+                loader={<div>Loading Chart</div>}
+                data={stadiaHabitual.egress}
+                options={{
+                  hAxis: {
+                    title: 'Día de la semana',
+                  },
+                  vAxis: {
+                    title: 'Horario',
+                  },
+                }}
+                rootProps={{ 'data-testid': '2' }}
+                chartPackages={['corechart', 'controls']}
+                render={({ renderControl, renderChart }) => {
+                    return (
+                      <div style={{ display: 'flex' }}>
+                        <div style={{ width: '40%' , marginRight: '100px'}}>{renderControl(() => true)}</div>
+                        <div style={{ width: '60%' }}>{renderChart()}</div>
+                      </div>
+                    )
+                  }}
+                controls={[
+                  {
+                    controlType: 'NumberRangeFilter',
+                    controlID: 'egress-filter',
+                    options: {
+                      filterColumnIndex: 1,
+                      ui: {
+                        labelStacking: 'vertical',
+                        label: 'Rango de horarios:',
+                        allowTyping: false,
+                        allowMultiple: false,
+                        color: 'red'
+                      },
+                    },
+                  }
+                ]}
+              />)}
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Egresos habituales</h4>

@@ -43,7 +43,7 @@ export default function LabelBottomNavigation() {
     <>
     <BottomNavigation value={value} onChange={handleChange} showLabels className={classes.root}>
       <BottomNavigationAction label="Estadías" value='stayStatistics' icon={<AssessmentIcon />} />
-      <BottomNavigationAction label="Recents" value='Recents' icon={<AssessmentIcon />} />
+      <BottomNavigationAction label="Estadías por fechas" value='Recents' icon={<AssessmentIcon />} />
       <BottomNavigationAction label="Ingresos/Egresos" value='Favorites'  icon={<AssessmentIcon />} />
       <BottomNavigationAction label="Habituales" value='Nearby' icon={<ViewWeekIcon />} />
       <BottomNavigationAction label="Concurrencia/Robos" value='Folder' icon={<DateRangeIcon />} />
