@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer";
 import Grid from "@material-ui/core/Grid";
@@ -47,6 +47,7 @@ export default function BicycleParkings() {
   const [numberBicycleParking, setNumberBicycleParking] = React.useState(0);
   const [countPlaces, setCountPlaces] = React.useState(1);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [number, setNumber] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,10 +94,14 @@ export default function BicycleParkings() {
         console.log('Error bicycly parkings ', error) 
       })  
   }
-
+  //.get(APP_URL + "bicycleParking-find/"+filter, headerAuthorization())
+  //.get(APP_URL + "bicycleParkingAndPlaces/", headerAuthorization())
   const findBicycleParkings = () => {
+    const filter = number ? '?parking.number='+number : ''; 
+    console.log("filter")
+    console.log(filter)
     axios
-      .get(APP_URL + "bicycleParkingAndPlaces/", headerAuthorization())
+      .get(APP_URL + "bicycleParking-find/"+filter, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
           setParkings(result);
@@ -153,13 +158,15 @@ export default function BicycleParkings() {
                   <CustomInput
                     labelText="Ingrese un bicicletero"
                     id="first-name"
+                    value={number}
+                    onChange={e => setNumber(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6} style={{marginTop: 25}}>
-                  <Button color="info">Buscar.<Icon className="fa fa-search" style={{ fontSize: 15 }}/></Button>
+                  <Button color="info" onClick={() => findBicycleParkings()}>Buscar.<Icon className="fa fa-search" style={{ fontSize: 15 }}/></Button>
                   <Button color="success" onClick={handleClickOpen}>Nuevo.<div><DirectionsBike fontSize='large'/></div> </Button>
                 </GridItem>
               </GridContainer>
