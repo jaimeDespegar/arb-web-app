@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -21,6 +19,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { APP_URL } from './../../variables/utils.js';
+import { Chart } from "react-google-charts";
 
 
 const useStyles = makeStyles(() => ({
@@ -43,82 +42,12 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
     .get(APP_URL + "estadia/reportsRange/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
-      console.log(result)
-      setStadiaRange(result)
+      console.log(result);
+      setStadiaRange(result); 
     })
     .catch((error) => { console.log(error) })
   }
 
-  const data = {
-    datasets: [
-      {
-        backgroundColor: colors.indigo[500],
-        data: stadiaRange.listEntrance,
-        label: 'Ingresos'
-      },
-      {
-        backgroundColor: colors.red[200],
-        data: stadiaRange.listEgress,
-        label: 'Egresos'
-      }
-    ],
-    labels: stadiaRange.listLastDaysWeek
-  };
-
-  const options = {
-    animation: false,
-    cornerRadius: 20,
-    layout: { padding: 0 },
-    legend: { display: false },
-    maintainAspectRatio: false,
-    responsive: true,
-    scales: {
-      xAxes: [
-        {
-          barThickness: 12,
-          maxBarThickness: 10,
-          barPercentage: 0.5,
-          categoryPercentage: 0.5,
-          ticks: {
-            fontColor: theme.palette.text.secondary
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          }
-        }
-      ],
-      yAxes: [
-        {
-          ticks: {
-            fontColor: theme.palette.text.secondary,
-            beginAtZero: true,
-            min: 0
-          },
-          gridLines: {
-            borderDash: [2],
-            borderDashOffset: [2],
-            color: theme.palette.divider,
-            drawBorder: false,
-            zeroLineBorderDash: [2],
-            zeroLineBorderDashOffset: [2],
-            zeroLineColor: theme.palette.divider
-          }
-        }
-      ]
-    },
-    tooltips: {
-      backgroundColor: theme.palette.background.default,
-      bodyFontColor: theme.palette.text.secondary,
-      borderColor: theme.palette.divider,
-      borderWidth: 1,
-      enabled: true,
-      footerFontColor: theme.palette.text.secondary,
-      intersect: false,
-      mode: 'index',
-      titleFontColor: theme.palette.text.primary
-    }
-  };
 
   useEffect(() => { 
     findEstadiasReportesAll();
@@ -153,38 +82,70 @@ const StadiaStatisticsRange = ({ className, ...rest }) => {
           <MenuItem value={14}>catorce</MenuItem>
         </Select>
       </FormControl>
-
-
       <CardHeader
-        
         title="Estadísticas de estadías semanal"
       />
       <Divider />
       <CardContent>
-        <Box
-          height={400}
-          position="relative"
-        >
-          <Bar
-            data={data}
-            options={options}
-          />
-        </Box>
+        
+         {stadiaRange.length  && (<Chart
+            width={'550px'}
+            height={'350px'}
+            chartType="Bar"
+            loader={<div>Loading Chart</div>}
+            data={stadiaRange}
+            options={{
+              chart: {
+                title: '',
+                subtitle: 'Estadías por turnos',
+              },
+            }}
+            rootProps={{ 'data-testid': '2' }}
+            chartPackages={['corechart', 'controls']}
+            render={({ renderControl, renderChart }) => {
+                return (
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ width: '40%' , marginRight: '100px'}}>{renderControl(() => true)}</div>
+                    <div style={{ width: '60%' }}>{renderChart()}</div>
+                  </div>
+                )
+              }}
+            controls={[
+              {
+                controlType: 'NumberRangeFilter',
+                controlID: 'suspected-filter',
+                options: {
+                  filterColumnIndex: 1,
+                  ui: {
+                    labelStacking: 'vertical',
+                    label: 'Cantidad Ingresos:',
+                    allowTyping: false,
+                    allowMultiple: false,
+                  },
+                },
+              },
+              {
+                controlType: 'NumberRangeFilter',
+                controlID: 'ok-filter',
+                options: {
+                  filterColumnIndex: 2,
+                  ui: {
+                    labelStacking: 'vertical',
+                    label: 'Cantidad Egresos:',
+                    allowTyping: false,
+                    allowMultiple: false,
+                  },
+                },
+              }
+            ]}
+          />)}
       </CardContent>
       <Divider />
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          p={2}
         >
-          Overview
-        </Button>
       </Box>
     </Card>
   );

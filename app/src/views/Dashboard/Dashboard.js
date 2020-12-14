@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AccessTime from "@material-ui/icons/AccessTime";
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import MotorcycleOutlined from '@material-ui/icons/MotorcycleOutlined';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -167,7 +167,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> {formatDateCreated(arrivalSelected)}
+                <AccessTimeIcon /> {formatDateCreated(arrivalSelected)}
               </div>
             </CardFooter>
           </Card>
@@ -187,7 +187,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> {formatDateCreated(departureSelected)}
+                <AccessTimeIcon /> {formatDateCreated(departureSelected)}
               </div>
             </CardFooter>
           </Card>
@@ -207,7 +207,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> {formatDateCreated(suspectedCaseSelected)}
+                <AccessTimeIcon /> {formatDateCreated(suspectedCaseSelected)}
               </div>
             </CardFooter>
           </Card>
