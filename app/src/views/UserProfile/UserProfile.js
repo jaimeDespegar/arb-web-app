@@ -17,6 +17,8 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { headerAuthorization } from "./../../variables/token";
 import Icon from '@material-ui/core/Icon';
+import { APP_URL } from './../../variables/utils.js';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -98,7 +100,7 @@ export default function UserProfile() {
   
   const createUser = (params) => {
     axios
-      .post("http://127.0.0.1:8000/api/auth/register/", params, headerAuthorization())
+      .post(APP_URL + "auth/register/", params, headerAuthorization())
       .then(res => res.params)
       .then((result) => {
           cleanForm();
@@ -122,7 +124,7 @@ export default function UserProfile() {
   const findUsers = () => {
     const filter = username ? '?user.username='+username : '';    
     axios
-      .get("http://127.0.0.1:8000/api/bikeOwnerParser-Find"+filter, headerAuthorization())
+      .get(APP_URL + "bikeOwnerParser-Find"+filter, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
         let values = result.map((item) => [item.username, 
@@ -153,7 +155,7 @@ export default function UserProfile() {
 
   const confirmUpdateUser = (user) => {
     axios
-      .put("http://127.0.0.1:8000/api/bikeOwner/update/"+user.username +'/', user, headerAuthorization())
+      .put(APP_URL + "bikeOwner/update/"+user.username +'/', user, headerAuthorization())
       .then(res => res.data)
       .then((result) => {
         alert('Usuario Actualizado');
@@ -172,7 +174,7 @@ export default function UserProfile() {
 
   const deleteUser = (user) => {
     axios
-      .delete("http://127.0.0.1:8000/api/bikeOwner-delete/"+ user.username+"/", headerAuthorization())
+      .delete(APP_URL + "bikeOwner-delete/"+ user.username+"/", headerAuthorization())
       .then(res => res.data)
       .then((result) => {
         alert('Usuario ' + user.username + ' eliminado');

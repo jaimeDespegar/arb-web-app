@@ -1,12 +1,10 @@
 import React, { useEffect , useState} from "react";
-import ChartistGraph from "react-chartist";
 import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { dailySalesChart } from "variables/charts.js";
 import axios from 'axios';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import { headerAuthorization } from "./../../variables/token";
@@ -14,6 +12,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { APP_URL } from './../../variables/utils.js';
+import { Chart } from "react-google-charts";
 
 
 const useStyles = makeStyles(styles);
@@ -26,22 +26,9 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
     setDays(event.target.value);
   };
 
-  let datalocalEntrance = {
-    data: {
-      labels: stadiaHabitual.listDaysWeek,
-      series: stadiaHabitual.listHoursParkingFinal//Poner horarios picos por dia
-    }
-  };
-  
-  let datalocalEgress = {
-    data: {
-      labels: stadiaHabitual.listDaysWeek,
-      series: stadiaHabitual.listEgressSuspectedFinal//Poner horarios picos de casos sospechosos
-    }
-  };
   const findEstadiasReportesAll = () => {
     axios
-    .get("http://127.0.0.1:8000/api/estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/", headerAuthorization())
+    .get(APP_URL + "estadia/reportsHourAllSuspectedAndPeakTime/"+days+"/", headerAuthorization())
     .then(res => res.data)
     .then((result) => {
       console.log(result)
@@ -88,16 +75,50 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
       </GridItem>
 
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card chart>
             <CardHeader color="success">
-              <ChartistGraph
-                className="ct-chart"
-                data={datalocalEntrance.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
+              {stadiaHabitual && stadiaHabitual.parkings && stadiaHabitual.parkings.length && (
+                <Chart
+                width={'650px'}
+                height={'400px'}
+                chartType="LineChart"
+                loader={<div>Loading Chart</div>}
+                data={stadiaHabitual.parkings}
+                options={{
+                  hAxis: {
+                    title: 'Día de la semana',
+                  },
+                  vAxis: {
+                    title: 'Horario',
+                  },
+                }}
+                rootProps={{ 'data-testid': '1' }}
+                chartPackages={['corechart', 'controls']}
+                render={({ renderControl, renderChart }) => {
+                    return (
+                      <div style={{ display: 'flex' }}>
+                        <div style={{ width: '40%' , marginRight: '50px'}}>{renderControl(() => true)}</div>
+                        <div style={{ width: '60%' }}>{renderChart()}</div>
+                      </div>
+                    )
+                  }}
+                controls={[
+                  {
+                    controlType: 'NumberRangeFilter',
+                    controlID: 'parkings-filter',
+                    options: {
+                      filterColumnIndex: 1,
+                      ui: {
+                        labelStacking: 'vertical',
+                        label: 'Rango de horarios:',
+                        allowTyping: false,
+                        allowMultiple: false,
+                      },
+                    },
+                  }
+                ]}
+              />)}
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Hora pico en bicicleteros</h4>
@@ -105,16 +126,50 @@ export default function StadiaStatistcsSuspectedAndPeakTimeAll() {
           </Card>
         </GridItem>
         
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card chart>
             <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={datalocalEgress.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
+              {stadiaHabitual && stadiaHabitual.suspects && stadiaHabitual.suspects.length && (
+                <Chart
+                width={'650px'}
+                height={'400px'}
+                chartType="LineChart"
+                loader={<div>Loading Chart</div>}
+                data={stadiaHabitual.suspects}
+                options={{
+                  hAxis: {
+                    title: 'Día de la semana',
+                  },
+                  vAxis: {
+                    title: 'Horario',
+                  },
+                }}
+                rootProps={{ 'data-testid': '1' }}
+                chartPackages={['corechart', 'controls']}
+                render={({ renderControl, renderChart }) => {
+                    return (
+                      <div style={{ display: 'flex' }}>
+                        <div style={{ width: '40%' , marginRight: '50px'}}>{renderControl(() => true)}</div>
+                        <div style={{ width: '60%' }}>{renderChart()}</div>
+                      </div>
+                    )
+                  }}
+                controls={[
+                  {
+                    controlType: 'NumberRangeFilter',
+                    controlID: 'suspects-filter',
+                    options: {
+                      filterColumnIndex: 1,
+                      ui: {
+                        labelStacking: 'vertical',
+                        label: 'Rango de horarios:',
+                        allowTyping: false,
+                        allowMultiple: false,
+                      },
+                    },
+                  }
+                ]}
+              />)}
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Hora de mayor egresos sospechosos</h4>
